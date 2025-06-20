@@ -1,0 +1,66 @@
+create database TransportDB;
+-- drop database TransportDB;
+use TransportDB;
+
+
+CREATE TABLE RegisterDetails (
+	userName varchar(30) primary key,
+    gender varchar(10),
+    email varchar(30),
+    password varchar(20),
+    phone char(10),
+    role varchar(10),
+    address varchar(30),
+    comments varchar(100),
+    status varchar(25) default 'pending'
+);
+
+create table driver_Details (
+	name varchar(50) primary key,
+	address varchar(250),
+	phonenumber int,
+	vechilenumber varchar(25),
+	licensenumber varchar(25),
+	expirydate date,
+	password varchar(25),
+	confirmpassword varchar(25),
+	status varchar(25) default 'pending'
+);
+
+CREATE TABLE bookingDetails (
+    userName varchar(30),
+    pickupAddress VARCHAR(100),
+    dropAddress VARCHAR(100),
+    phoneNumber CHAR(10),
+    pickUpTime time,
+    bookDate date default (current_date()),
+    status varchar(10) default 'Request',
+    DriverName varchar(20) default null,
+    
+    constraint C_PK primary key (userName,bookDate,pickUpTime),
+    constraint C_FK1 foreign key(DriverName) references driver_Details(name),
+    constraint C_FK2 foreign key(userName) references RegisterDetails(userName)
+);
+
+
+CREATE TABLE PaymentDetails (
+    PaymentID int auto_increment primary key,
+    UserName varchar(30),
+    Amount int,
+    Method VARCHAR(30),
+    payDate date default (current_date()),
+    
+    constraint P_FK1 foreign key(userName,payDate) references bookingDetails(userName,bookDate)
+);
+
+create table faqs ( 
+	faq_id int auto_increment primary key,
+	question text not null,
+	answer text
+);
+
+select * from bookingDetails;
+select * from RegisterDetails;
+select * from driver_Details;
+select * from PaymentDetails;
+select * from faqs;
