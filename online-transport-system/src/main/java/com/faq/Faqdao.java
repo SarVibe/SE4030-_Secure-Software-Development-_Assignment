@@ -18,7 +18,7 @@ public class Faqdao {
 		    
 			String url = "jdbc:mysql://localhost:3306/TransportDB";
 			String username = "root";
-			String password = "it23440722@my.sliit.lk";
+			String password = "1234";
 	        
 			con = DriverManager.getConnection(url, username, password);
 	        

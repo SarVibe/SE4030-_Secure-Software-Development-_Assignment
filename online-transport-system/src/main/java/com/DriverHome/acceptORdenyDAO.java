@@ -14,7 +14,7 @@ public class acceptORdenyDAO {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/TransportDB", "root", "it23440722@my.sliit.lk");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/TransportDB", "root", "1234");
 			
 			String query = "UPDATE bookingDetails SET status = ? , DriverName = ? where userName = ? and bookDate = current_date()";
 			

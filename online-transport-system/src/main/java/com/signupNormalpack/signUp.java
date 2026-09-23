@@ -122,7 +122,7 @@ public class signUp extends HttpServlet {
 			  response.sendRedirect("signupNormal.jsp");
           }
 	  } catch (SQLException e) {
-			e.getStackTrace();
+			e.printStackTrace();
 	  }
 	}
 

@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class LoginDAO {
     private String url = "jdbc:mysql://localhost:3306/TransportDB";
     private String username = "root";
-    private String password = "it23440722@my.sliit.lk";
+    private String password = "1234";
 
     public boolean validateUser(String un, String pw) {
         boolean status = false;

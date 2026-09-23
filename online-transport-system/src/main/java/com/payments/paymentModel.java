@@ -15,7 +15,7 @@ public class paymentModel
 	        try 
 	        {
 	            Class.forName("com.mysql.cj.jdbc.Driver");
-	            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/TransportDB", "root", "it23440722@my.sliit.lk");
+	            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/TransportDB", "root", "1234");
 
 	            String query = "INSERT INTO PaymentDetails(UserName, Amount, Method) VALUES(?, ?, ?)";
 

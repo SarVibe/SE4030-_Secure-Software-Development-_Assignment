@@ -19,7 +19,7 @@ public class Forgotservlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     String url = "jdbc:mysql://localhost:3306/TransportDB";
     String username = "root";
-    String password = "it23440722@my.sliit.lk";
+    String password = "1234";
     Connection con = null;
 
     /**
