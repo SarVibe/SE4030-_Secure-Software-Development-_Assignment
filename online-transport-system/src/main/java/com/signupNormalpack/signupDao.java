@@ -15,7 +15,7 @@ public class signupDao {
 			
 			try {
 				Class.forName("com.mysql.cj.jdbc.Driver");
-				con = DriverManager.getConnection("jdbc:mysql://localhost:3306/TransportDB", "root", "1234");
+				con = com.util.DBConfig.getConnection();
 				String query = "Select count(*) from RegisterDetails where userName=?";
 				
 				ps = con.prepareStatement(query);
@@ -49,7 +49,7 @@ public class signupDao {
 			
 			try {
 				Class.forName("com.mysql.cj.jdbc.Driver");
-				con = DriverManager.getConnection("jdbc:mysql://localhost:3306/TransportDB", "root", "1234");
+				con = com.util.DBConfig.getConnection();
 				String query = "Insert into RegisterDetails( userName, gender, email, password, phone, role, address, comments) values(?,?,?,?,?,?,?,?)";
 				
 				PreparedStatement pst = con.prepareStatement(query);

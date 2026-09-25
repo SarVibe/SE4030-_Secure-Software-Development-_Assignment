@@ -19,7 +19,7 @@ public boolean deleteDriver(String name) throws SQLException {
 	try {
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		
-		con = DriverManager.getConnection("jdbc:mysql://localhost:3306/TransportDB", "root", "it23440722@my.sliit.lk");
+		con = com.util.DBConfig.getConnection();
 		
 		String query = "delete from driver_Details where name = ?";
 		

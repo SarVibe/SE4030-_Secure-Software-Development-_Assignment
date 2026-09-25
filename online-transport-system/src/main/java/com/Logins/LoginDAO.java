@@ -7,10 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class LoginDAO {
-    private String url = "jdbc:mysql://localhost:3306/TransportDB";
-    private String username = "root";
-    private String password = "1234";
-
     public boolean validateUser(String un, String pw) {
         boolean status = false;
         Connection con = null;
@@ -18,7 +14,7 @@ public class LoginDAO {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(url, username, password);
+            con = com.util.DBConfig.getConnection();
             String query = null;
     		
     		if( un.startsWith("CT") ) {

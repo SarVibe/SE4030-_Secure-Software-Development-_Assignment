@@ -18,7 +18,7 @@ public class BookingDao {
 		
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/TransportDB", "root", "1234");
+			con = com.util.DBConfig.getConnection();
 			String query = "Insert into bookingDetails( userName, pickupAddress, dropAddress, phoneNumber, pickUpTime) values(?,?,?,?,?)";
 			
 			PreparedStatement pst = con.prepareStatement(query);
@@ -58,7 +58,7 @@ public class BookingDao {
 		
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/TransportDB", "root", "1234");
+			con = com.util.DBConfig.getConnection();
 			
 	        String query =  "SELECT DD.name, DD.phoneNumber " +
 		                    "FROM driver_Details DD JOIN bookingDetails BD " +

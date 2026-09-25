@@ -15,11 +15,7 @@ public class providerdao {
         try {
         	System.out.println("---------------Start providerdao --------------------");
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/TransportDB";
-            String username = "root";
-            String password = "1234";
-
-            con1 = DriverManager.getConnection(url, username, password);
+            con1 = com.util.DBConfig.getConnection();
             
            
             String Query = "UPDATE  faqs SET answer =(?) WHERE faq_id = (?)";

@@ -17,9 +17,6 @@ import java.sql.SQLException;
 @WebServlet("/Forgotservlet")
 public class Forgotservlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    String url = "jdbc:mysql://localhost:3306/TransportDB";
-    String username = "root";
-    String password = "1234";
     Connection con = null;
 
     /**
@@ -61,7 +58,7 @@ public class Forgotservlet extends HttpServlet {
         
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(url, username, password);
+            con = com.util.DBConfig.getConnection();
 
             String query = "UPDATE RegisterDetails SET password = ? WHERE userName = ?";
             PreparedStatement pst = con.prepareStatement(query);
