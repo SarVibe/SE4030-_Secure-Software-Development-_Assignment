@@ -16,11 +16,7 @@ public class Faqdao {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			System.out.println("Driver loaded successfully.");
 		    
-			String url = "jdbc:mysql://localhost:3306/TransportDB";
-			String username = "root";
-			String password = "1234";
-	        
-			con = DriverManager.getConnection(url, username, password);
+			con = com.util.DBConfig.getConnection();
 	        
 			String query = "INSERT INTO faqs(question) VALUES(?)";
 			pst = con.prepareStatement(query);  // Changed to prepareStatement()

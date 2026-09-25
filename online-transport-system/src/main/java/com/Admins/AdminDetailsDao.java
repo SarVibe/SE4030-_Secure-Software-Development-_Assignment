@@ -20,7 +20,7 @@ public class AdminDetailsDao {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/TransportDB", "root", "1234");
+			con = com.util.DBConfig.getConnection();
 			
 			
 				String query = "select userName, gender, email, phone, role, address, comments, status from RegisterDetails where userName like 'AD%' and status = 'pending'";

@@ -18,7 +18,7 @@ public boolean approveDriver(String name) throws SQLException {
 	try {
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		
-		con = DriverManager.getConnection("jdbc:mysql://localhost:3306/TransportDB", "root", "1234");
+		con = com.util.DBConfig.getConnection();
 		
 		String query = "UPDATE driver_Details SET status = ? WHERE name = ? ";
 		

@@ -16,7 +16,7 @@ public class AcceptAdminDao {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/TransportDB", "root", "1234");
+			con = com.util.DBConfig.getConnection();
 			
 			String query = "UPDATE RegisterDetails SET status = ?, role = ? WHERE userName = ?";
 

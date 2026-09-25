@@ -22,7 +22,7 @@ public class DriverDao {
         {
 	       
 	        Class.forName("com.mysql.cj.jdbc.Driver");
-	        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/TransportDB", "root", "1234");
+	        con = com.util.DBConfig.getConnection();
 
 	        String query = "SELECT phonenumber, address FROM driver_Details WHERE name = ?";
 	        pst = con.prepareStatement(query);
@@ -68,7 +68,7 @@ public class DriverDao {
 	    {
 	        
 	        Class.forName("com.mysql.cj.jdbc.Driver");
-	        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/TransportDB", "root", "1234");
+	        con = com.util.DBConfig.getConnection();
 
 	        
 	        String cus = "SELECT userName, pickupAddress, dropAddress, phoneNumber, pickUpTime FROM bookingDetails WHERE status = 'Request'";

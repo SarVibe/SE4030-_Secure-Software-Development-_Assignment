@@ -23,7 +23,7 @@ public class myBookingDao {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/TransportDB", "root", "1234");
+			con = com.util.DBConfig.getConnection();
 			
 			String query = "select BD.pickupAddress, BD.dropAddress, BD.pickUpTime, BD.bookDate, BD.DriverName, PD.Amount "
 					+ "from bookingDetails BD, PaymentDetails PD "
