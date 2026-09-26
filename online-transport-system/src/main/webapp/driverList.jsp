@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.signupDriver.Driver" %> <!-- Import the Driver class -->
+<%@ page import="com.util.XSSUtils" %>
+
 <%
     if (session.getAttribute("userName") == null) {
         response.sendRedirect("Login.jsp");
@@ -132,20 +134,20 @@
                 for (Driver driver : driverList) {
         %>
                     <tr>
-                        <td><%= driver.getName() %></td>
-                        <td><%= driver.getAddress() %></td>
-                        <td><%= driver.getPhonenumber() %></td>
-                        <td><%= driver.getVechilenumber() %></td>
-                        <td><%= driver.getLicensenumber() %></td>
-                        <td><%= driver.getExpirydate() %></td>
+                        <td><%= XSSUtils.sanitize(driver.getName()) %></td>
+                        <td><%= XSSUtils.sanitize(driver.getAddress()) %></td>
+                        <td><%= XSSUtils.sanitize(String.valueOf(driver.getPhonenumber())) %></td>
+                        <td><%= XSSUtils.sanitize(driver.getVechilenumber()) %></td>
+                        <td><%= XSSUtils.sanitize(driver.getLicensenumber()) %></td>
+                        <td><%= XSSUtils.sanitize(String.valueOf(driver.getExpirydate())) %></td>
                         <td>
                             <form action="AllowDriver" method="post">
-                                <input type="hidden" name="allow" value="<%= driver.getName() %>"/>
+                                <input type="hidden" name="allow" value="<%= XSSUtils.sanitizeForHtmlAttribute(driver.getName()) %>"/>
                                 <input type="submit" value="Allow" />
                             </form>
                             
                             <form action="DeleteDriver" method="post">
-                                <input type="hidden" name="delete" value="<%= driver.getName() %>"/>
+                                <input type="hidden" name="delete" value="<%= XSSUtils.sanitizeForHtmlAttribute(driver.getName()) %>"/>
                                 <input type="submit" value="Deny" id="deny" />
                             </form>
                         </td>

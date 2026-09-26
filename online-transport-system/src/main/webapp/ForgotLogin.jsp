@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="com.util.XSSUtils" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -122,8 +124,9 @@
             if (errorMessage2 != null) { 
         %>
             <div class="error-message">
-                <h2><%= errorMessage2 %></h2>
+                <h2><%= XSSUtils.sanitize(errorMessage2) %></h2>
             </div>
+
         <% 
             } 
         %>
@@ -133,8 +136,9 @@
                 if (errorMessage1 != null) { 
             %>
                 <div class="error-message">
-                    <h2><%= errorMessage1 %></h2>
+                    <h2><%= XSSUtils.sanitize(errorMessage1) %></h2>
                 </div>
+
             <% 
                 } 
             %>
@@ -145,8 +149,9 @@
                 if (errorMessage3 != null) { 
             %>
                 <div class="error-message">
-                    <h2><%= errorMessage3 %></h2>
+                    <h2><%= XSSUtils.sanitize(errorMessage3) %></h2>
                 </div>
+
             <% 
                 } 
             %>

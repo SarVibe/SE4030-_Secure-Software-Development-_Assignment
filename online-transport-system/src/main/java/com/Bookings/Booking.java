@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalTime;
 
+import com.util.XSSUtils;
+
+
 import com.InvalidUserDefinedException.InvalidPhoneNumberException;
 import com.InvalidUserDefinedException.InvalidPickUpTimeException;
 
@@ -52,10 +55,12 @@ public class Booking extends HttpServlet {
             String username = (String) session.getAttribute("userName");
         
 		
-		String pickupAddress = request.getParameter("pickup");
-		String dropAddress = request.getParameter("drop");
-		String phoneNumber = request.getParameter("phone");
-		String pickupTimeString = request.getParameter("pickupTime");
+		// --- XSS Sanitization: sanitize all text inputs before use ---
+		String pickupAddress    = XSSUtils.sanitize(request.getParameter("pickup"));
+		String dropAddress      = XSSUtils.sanitize(request.getParameter("drop"));
+		String phoneNumber      = XSSUtils.sanitize(request.getParameter("phone"));
+		String pickupTimeString = XSSUtils.sanitize(request.getParameter("pickupTime"));
+
 		
 		LocalTime pickupTime = LocalTime.parse(pickupTimeString);
 		LocalTime curTime = LocalTime.now();

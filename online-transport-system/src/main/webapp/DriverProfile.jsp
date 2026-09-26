@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.signupDriver.*" %>
+<%@ page import="com.util.XSSUtils" %>
+
 <%
     if (session.getAttribute("userName") == null) {
         response.sendRedirect("Login.jsp");
@@ -119,7 +121,8 @@
             <!-- Form to send driverName to the servlet -->
             <form action="DriverProfile" method="POST">
                 <!-- Hidden input to send the driverName -->
-                <input type="hidden" name="driverName" value="<%= request.getAttribute("driverName") != null ? request.getAttribute("driverName") : "" %>">
+                <input type="hidden" name="driverName" value="<%= XSSUtils.sanitizeForHtmlAttribute(request.getAttribute("driverName") != null ? String.valueOf(request.getAttribute("driverName")) : "") %>">
+
 
                 <!-- Submit button to send the form -->
                 <button type="submit" class="view-profile-btn">View Profile</button>
@@ -129,9 +132,10 @@
         <div id="driver-details" class="driver-details" style="display: <%=(request.getAttribute("driverName") != null) ? "block" : "none" %>;">
             <h2>Driver Details</h2>
             
-            <p><strong>Driver Name :</strong> <%= request.getAttribute("driverName") != null ? request.getAttribute("driverName") : "N/A" %></p>
-            <p><strong>Driver Phonenumber :</strong> <%= request.getAttribute("phoneNumber") != null ? request.getAttribute("phoneNumber") : "N/A" %></p>
-            <p><strong>Driver Address :</strong> <%= request.getAttribute("address") != null ? request.getAttribute("address") : "N/A" %></p>
+            <p><strong>Driver Name :</strong> <%= XSSUtils.sanitize(request.getAttribute("driverName") != null ? String.valueOf(request.getAttribute("driverName")) : "N/A") %></p>
+            <p><strong>Driver Phonenumber :</strong> <%= XSSUtils.sanitize(request.getAttribute("phoneNumber") != null ? String.valueOf(request.getAttribute("phoneNumber")) : "N/A") %></p>
+            <p><strong>Driver Address :</strong> <%= XSSUtils.sanitize(request.getAttribute("address") != null ? String.valueOf(request.getAttribute("address")) : "N/A") %></p>
+
         </div>
         
         <a href="DriverHomeServlet" id="finishTrip-btn">Go Back</a>

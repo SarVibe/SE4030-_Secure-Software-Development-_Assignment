@@ -2,6 +2,14 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.Bookings.*" %>
+<%@ page import="com.util.XSSUtils" %>
+
+<%
+    if (session.getAttribute("userName") == null) {
+        response.sendRedirect("Login.jsp");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -136,7 +144,7 @@
 			width:35%;
 			position:absolute;
 			top:2%;
-			left 0px;
+			left: 0px;
 		}
 		
     </style>
@@ -170,13 +178,13 @@
             if (AllBooking != null) {
                 for (User booking : AllBooking ) {
         %>
-        	<p><strong>Passenger Name :</strong> <%= booking.getUserName() %></p>
-            <p><strong>Pickup Address :</strong> <%= booking.getPickupAddress() %></p>
-            <p><strong>Drop Address :</strong> <%= booking.getDropAddress() %></p>
-            <p><strong>Pickup Time :</strong> <%= booking.getPickUpTime() %></p>
-            <p><strong>Phone Number :</strong> <%= booking.getPhoneNumber() %></p>
+        	<p><strong>Passenger Name :</strong> <%= XSSUtils.sanitize(booking.getUserName()) %></p>
+            <p><strong>Pickup Address :</strong> <%= XSSUtils.sanitize(booking.getPickupAddress()) %></p>
+            <p><strong>Drop Address :</strong> <%= XSSUtils.sanitize(booking.getDropAddress()) %></p>
+            <p><strong>Pickup Time :</strong> <%= XSSUtils.sanitize(String.valueOf(booking.getPickUpTime())) %></p>
+            <p><strong>Phone Number :</strong> <%= XSSUtils.sanitize(booking.getPhoneNumber()) %></p>
             <form action="acceptORdenyservlet" method="post">
-                <input type="hidden" name="NameOfBookingUser" value="<%= booking.getUserName() %>">
+                <input type="hidden" name="NameOfBookingUser" value="<%= XSSUtils.sanitizeForHtmlAttribute(booking.getUserName()) %>">
                 <input type="submit" name="Accept" value="Accept" class="accept-btn">
             </form>
             <hr />
@@ -184,6 +192,7 @@
                 }
             }
         %>
+
     </div>
 
     <!-- Finish Trip Button, initially hidden -->

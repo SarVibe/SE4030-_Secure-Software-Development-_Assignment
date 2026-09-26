@@ -13,6 +13,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
+import com.util.XSSUtils;
+
+
 /**
  * Servlet implementation class Forgotservlet
  */
@@ -39,9 +42,12 @@ public class Forgotservlet extends HttpServlet {
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String un = request.getParameter("Username").trim();
+        // --- XSS Sanitization: sanitize username before DB query ---
+        String un  = XSSUtils.sanitize(request.getParameter("Username").trim());
+        // Passwords are NOT sanitized - they are only hashed and compared, never rendered.
         String npw = request.getParameter("NewPassword").trim();
         String opw = request.getParameter("ComPassword").trim();
+
 
        
         try {
@@ -104,7 +110,7 @@ public class Forgotservlet extends HttpServlet {
     private String hashPassword(String plainTextPassword) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hashBytes = md.digest(plainTextPassword.getBytes());
+            byte[] hashBytes = md.digest(plainTextPassword.getBytes(java.nio.charset.StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(hashBytes);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Error hashing password", e);

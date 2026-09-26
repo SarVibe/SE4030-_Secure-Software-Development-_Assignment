@@ -52,7 +52,7 @@ public class LoginDAO {
     private String hashPassword(String plainTextPassword) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hashBytes = md.digest(plainTextPassword.getBytes());
+            byte[] hashBytes = md.digest(plainTextPassword.getBytes(java.nio.charset.StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(hashBytes);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Error hashing password", e);

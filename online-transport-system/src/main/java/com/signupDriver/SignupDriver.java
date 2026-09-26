@@ -16,6 +16,9 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import com.util.XSSUtils;
+
+
 
 import com.InvalidUserDefinedException.*;
 
@@ -51,15 +54,18 @@ public class SignupDriver extends HttpServlet {
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		
-		String name = request.getParameter("name");
-		String address = request.getParameter("address");
-		String phonenumberString = request.getParameter("phonenumber");
+		// --- XSS Sanitization: sanitize all text inputs before use ---
+		String name             = XSSUtils.sanitize(request.getParameter("name"));
+		String address          = XSSUtils.sanitize(request.getParameter("address"));
+		String phonenumberString = XSSUtils.sanitize(request.getParameter("phonenumber"));
 		int phonenumber = Integer.parseInt(phonenumberString);
-		String vechilenumber = request.getParameter("vechilenumber");
-		String licensenumber = request.getParameter("licensenumber");
-		String expiryDateString = request.getParameter("expirydate");
-		String password = request.getParameter("password");
-		String confirmpassword = request.getParameter("confirmpassword");
+		String vechilenumber   = XSSUtils.sanitize(request.getParameter("vechilenumber"));
+		String licensenumber   = XSSUtils.sanitize(request.getParameter("licensenumber"));
+		String expiryDateString = XSSUtils.sanitize(request.getParameter("expirydate"));
+		// Passwords are NOT sanitized here - they are validated via strict regex.
+		String password         = request.getParameter("password");
+		String confirmpassword  = request.getParameter("confirmpassword");
+
         
         java.sql.Date expiryDate = java.sql.Date.valueOf(expiryDateString);
         
@@ -132,6 +138,7 @@ public class SignupDriver extends HttpServlet {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			errorMessages.add("Database error occurred: " + e.getMessage());
 		} catch(invalidUsername1Exception e) {
         	errorMessages.add("Username already exists");
         }
