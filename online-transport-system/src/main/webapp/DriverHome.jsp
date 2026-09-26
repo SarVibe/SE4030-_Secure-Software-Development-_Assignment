@@ -2,6 +2,12 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.Bookings.*" %>
+<%
+    if (session.getAttribute("userName") == null) {
+        response.sendRedirect("Login.jsp");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -136,7 +142,7 @@
 			width:35%;
 			position:absolute;
 			top:2%;
-			left 0px;
+			left: 0px;
 		}
 		
     </style>
@@ -164,19 +170,29 @@
 
     <h1>Booking Information</h1>
     <div class="booking-info" id="booking-info">
+        <%!
+            private String escapeHtml(String str) {
+                if (str == null) return "";
+                return str.replace("&", "&amp;")
+                          .replace("<", "&lt;")
+                          .replace(">", "&gt;")
+                          .replace("\"", "&quot;")
+                          .replace("'", "&#x27;");
+            }
+        %>
         <%
             List<User> AllBooking = (List<User>) request.getAttribute("bookings");
         	
             if (AllBooking != null) {
                 for (User booking : AllBooking ) {
         %>
-        	<p><strong>Passenger Name :</strong> <%= booking.getUserName() %></p>
-            <p><strong>Pickup Address :</strong> <%= booking.getPickupAddress() %></p>
-            <p><strong>Drop Address :</strong> <%= booking.getDropAddress() %></p>
-            <p><strong>Pickup Time :</strong> <%= booking.getPickUpTime() %></p>
-            <p><strong>Phone Number :</strong> <%= booking.getPhoneNumber() %></p>
+        	<p><strong>Passenger Name :</strong> <%= escapeHtml(booking.getUserName()) %></p>
+            <p><strong>Pickup Address :</strong> <%= escapeHtml(booking.getPickupAddress()) %></p>
+            <p><strong>Drop Address :</strong> <%= escapeHtml(booking.getDropAddress()) %></p>
+            <p><strong>Pickup Time :</strong> <%= escapeHtml(booking.getPickUpTime()) %></p>
+            <p><strong>Phone Number :</strong> <%= escapeHtml(booking.getPhoneNumber()) %></p>
             <form action="acceptORdenyservlet" method="post">
-                <input type="hidden" name="NameOfBookingUser" value="<%= booking.getUserName() %>">
+                <input type="hidden" name="NameOfBookingUser" value="<%= escapeHtml(booking.getUserName()) %>">
                 <input type="submit" name="Accept" value="Accept" class="accept-btn">
             </form>
             <hr />

@@ -1,6 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.Admins.Admin" %> <!-- Import the Driver class -->
+<%
+    if (session.getAttribute("userName") == null) {
+        response.sendRedirect("Login.jsp");
+        return;
+    }
+%>
 <html>
 <head>
     <title>Pending Admin's List</title>

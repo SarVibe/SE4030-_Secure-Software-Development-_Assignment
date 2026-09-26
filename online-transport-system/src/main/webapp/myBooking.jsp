@@ -2,6 +2,12 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.Bookings.User" %>
+<%
+    if (session.getAttribute("userName") == null) {
+        response.sendRedirect("Login.jsp");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html>
 <head>

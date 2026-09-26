@@ -7,9 +7,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 /**
  * Servlet implementation class Forgotservlet
@@ -62,7 +64,7 @@ public class Forgotservlet extends HttpServlet {
 
             String query = "UPDATE RegisterDetails SET password = ? WHERE userName = ?";
             PreparedStatement pst = con.prepareStatement(query);
-            pst.setString(1, npw);
+            pst.setString(1, hashPassword(npw));
             pst.setString(2, un);
 
             int row = pst.executeUpdate(); // Execute the update
@@ -97,6 +99,16 @@ public class Forgotservlet extends HttpServlet {
     public static void isvalidpassword(String password) throws InvalidPasswordException {
         if (!password.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"))
             throw new InvalidPasswordException("Password must be 8+ chars, uppercase, lowercase, digit, special char");
+    }
+
+    private String hashPassword(String plainTextPassword) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = md.digest(plainTextPassword.getBytes());
+            return Base64.getEncoder().encodeToString(hashBytes);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Error hashing password", e);
+        }
     }
 }
 
