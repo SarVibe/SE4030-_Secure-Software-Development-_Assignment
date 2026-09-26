@@ -38,6 +38,18 @@ public class DeleteDriver extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 		
+		jakarta.servlet.http.HttpSession session = request.getSession(false);
+		if (session == null || session.getAttribute("userName") == null) {
+			response.sendRedirect("Login.jsp");
+			return;
+		}
+
+		String userName = (String) session.getAttribute("userName");
+		if (!userName.startsWith("AD")) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied: Admin privileges required.");
+			return;
+		}
+
 		String name = request.getParameter("delete");
 		String errorMessages = "Something went wrong! Please try again later";
 		 

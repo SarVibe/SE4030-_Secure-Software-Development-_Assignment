@@ -6,6 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import com.InvalidUserDefinedException.*;
 
 public class signupDriverDao {
@@ -52,8 +55,8 @@ public class signupDriverDao {
 			pst.setString(4, driver.getVechilenumber());
 			pst.setString(5, driver.getLicensenumber());
 			pst.setDate(6, driver.getExpirydate());
-			pst.setString(7, driver.getPassword());
-			pst.setString(8, driver.getConfirmpassword());
+			pst.setString(7, hashPassword(driver.getPassword()));
+			pst.setString(8, hashPassword(driver.getConfirmpassword()));
 			
 			int rowsAffected = pst.executeUpdate();
 		    
@@ -68,5 +71,15 @@ public class signupDriverDao {
 		}
 
 		return result;
+	}
+
+	private String hashPassword(String plainTextPassword) {
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			byte[] hashBytes = md.digest(plainTextPassword.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+			return Base64.getEncoder().encodeToString(hashBytes);
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException("Error hashing password", e);
+		}
 	}
 }

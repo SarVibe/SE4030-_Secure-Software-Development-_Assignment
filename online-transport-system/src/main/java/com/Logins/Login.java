@@ -8,6 +8,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+import com.util.XSSUtils;
+
+
 @WebServlet("/Login")
 public class Login extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -21,8 +24,11 @@ public class Login extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String un = request.getParameter("Username");
+        // --- XSS Sanitization: sanitize username before use ---
+        String un = XSSUtils.sanitize(request.getParameter("Username"));
+        // Password is NOT sanitized - it is never rendered in HTML output.
         String pw = request.getParameter("password");
+
 
         UserValidator userValidator = new UserValidator();
         

@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import com.util.XSSUtils;
 
 /**
  * Servlet implementation class signUp
@@ -43,16 +44,18 @@ public class signUp extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//doGet(request, response);
-		String userName = request.getParameter("userName");
-		String gender = request.getParameter("gender");
-		String email = request.getParameter("email");
+		// --- XSS Sanitization: sanitize all text inputs before use ---
+		String userName = XSSUtils.sanitize(request.getParameter("userName"));
+		String gender   = XSSUtils.sanitize(request.getParameter("gender"));
+		String email    = XSSUtils.sanitize(request.getParameter("email"));
+		// Password is NOT sanitized here - it is validated via strict regex.
 		String password = request.getParameter("password");
-		String phone = request.getParameter("phone");
-		String role = request.getParameter("role");
-		String address = request.getParameter("address");
-		String comments = request.getParameter("comments");		
+		String phone    = XSSUtils.sanitize(request.getParameter("phone"));
+		String role     = XSSUtils.sanitize(request.getParameter("role"));
+		String address  = XSSUtils.sanitize(request.getParameter("address"));
+		String comments = XSSUtils.sanitize(request.getParameter("comments"));		
 		
-		
+
 	     String errorPassword = null;
 	     String errorPhoneNumber = null;
 	     String errorName = null;
@@ -119,10 +122,13 @@ public class signUp extends HttpServlet {
 	    	  response.sendRedirect("RegisterSuccessCustomer.jsp?roleType="+role);
 	    	  
 		  } else {
-			  response.sendRedirect("signupNormal.jsp");
+			  request.setAttribute("errorMessage", "Failed to register. Please try again.");
+			  forwardToSignupPage(request, response, userName, email, role, gender, phone, address, comments);
           }
 	  } catch (SQLException e) {
 			e.printStackTrace();
+			request.setAttribute("errorMessage", "Database error occurred: " + e.getMessage());
+			forwardToSignupPage(request, response, userName, email, role, gender, phone, address, comments);
 	  }
 	}
 

@@ -1,6 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.Admins.Admin" %> <!-- Import the Driver class -->
+<%@ page import="com.util.XSSUtils" %>
+
+<%
+    if (session.getAttribute("userName") == null) {
+        response.sendRedirect("Login.jsp");
+        return;
+    }
+%>
 <html>
 <head>
     <title>Pending Admin's List</title>
@@ -111,18 +119,18 @@
                 for (Admin admin : adminList) {
         %>
                     <tr>
-                        <td><%= admin.getUserName() %></td>
-                        <td><%= admin.getGender() %></td>
-                        <td><%= admin.getEmail() %></td>
-                        <td><%= admin.getPhone() %></td>
-                        <td><%= admin.getRole() %></td>
-                        <td><%= admin.getAddress() %></td>
-                        <td><%= admin.getComments() %></td>
-                        <td><%= admin.getStatus() %></td>
+                        <td><%= XSSUtils.sanitize(admin.getUserName()) %></td>
+                        <td><%= XSSUtils.sanitize(admin.getGender()) %></td>
+                        <td><%= XSSUtils.sanitize(admin.getEmail()) %></td>
+                        <td><%= XSSUtils.sanitize(admin.getPhone()) %></td>
+                        <td><%= XSSUtils.sanitize(admin.getRole()) %></td>
+                        <td><%= XSSUtils.sanitize(admin.getAddress()) %></td>
+                        <td><%= XSSUtils.sanitize(admin.getComments()) %></td>
+                        <td><%= XSSUtils.sanitize(admin.getStatus()) %></td>
                         
                         <td>
                             <form action="AcceptAdmin" method="post">
-                                <input type="hidden" name="allow" value="<%= admin.getUserName() %>"/>
+                                <input type="hidden" name="allow" value="<%= XSSUtils.sanitizeForHtmlAttribute(admin.getUserName()) %>"/>
                                 <input type="submit" value="Allow" />
                             </form>
                             

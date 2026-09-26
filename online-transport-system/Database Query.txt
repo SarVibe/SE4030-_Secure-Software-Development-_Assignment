@@ -7,7 +7,7 @@ CREATE TABLE RegisterDetails (
 	userName varchar(30) primary key,
     gender varchar(10),
     email varchar(30),
-    password varchar(20),
+    password varchar(255),
     phone char(10),
     role varchar(10),
     address varchar(30),
@@ -22,8 +22,8 @@ create table driver_Details (
 	vechilenumber varchar(25),
 	licensenumber varchar(25),
 	expirydate date,
-	password varchar(25),
-	confirmpassword varchar(25),
+	password varchar(255),
+	confirmpassword varchar(255),
 	status varchar(25) default 'pending'
 );
 

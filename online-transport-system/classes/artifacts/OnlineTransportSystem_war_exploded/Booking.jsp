@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="com.InvalidUserDefinedException.*" %>
+<%@ page import="com.util.XSSUtils" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -136,11 +138,11 @@
 			
 			<input type="text" name="phone" id="phone" placeholder="Phone Number">
 			<% if (request.getAttribute("errorPhoneNumber") != null) { %>
-           	<p style="color:white;"><%= request.getAttribute("errorPhoneNumber") %></p> <% } %>
+           	<p style="color:white;"><%= XSSUtils.sanitize(String.valueOf(request.getAttribute("errorPhoneNumber"))) %></p> <% } %>
            
-			<label for="pickupTime">Pickup Time <input type="time" name="pickupTime"  required value="<%= request.getAttribute("pickupTime") != null ? request.getAttribute("pickupTime") : "" %>"></label><br>
+			<label for="pickupTime">Pickup Time <input type="time" name="pickupTime"  required value="<%= XSSUtils.sanitizeForHtmlAttribute(request.getAttribute("pickupTime") != null ? String.valueOf(request.getAttribute("pickupTime")) : "") %>"></label><br>
 			<% if (request.getAttribute("errorPickupTime") != null) { %>
-           	<p style="color:white;"><%= request.getAttribute("errorPickupTime") %></p> <% } %>
+           	<p style="color:white;"><%= XSSUtils.sanitize(String.valueOf(request.getAttribute("errorPickupTime"))) %></p> <% } %>
            	
 			<input type="submit" value="Book Now">
 		</form>

@@ -1,10 +1,13 @@
 package com.signupNormalpack;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 public class signupDao {
 	public boolean UserNameExist(String username) {
@@ -57,7 +60,7 @@ public class signupDao {
 				pst.setString(1, user.getUserName());
 				pst.setString(2, user.getGender());
 				pst.setString(3, user.getEmail());
-				pst.setString(4, user.getPassword());
+				pst.setString(4, hashPassword(user.getPassword()));
 				pst.setString(5, user.getPhone());
 				pst.setString(6, user.getRole());
 				pst.setString(7, user.getAddress());
@@ -80,6 +83,17 @@ public class signupDao {
 				}
 			}
 			
+			
 			return result;
+		}
+
+		private String hashPassword(String plainTextPassword) {
+			try {
+				MessageDigest md = MessageDigest.getInstance("SHA-256");
+				byte[] hashBytes = md.digest(plainTextPassword.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+				return Base64.getEncoder().encodeToString(hashBytes);
+			} catch (NoSuchAlgorithmException e) {
+				throw new RuntimeException("Error hashing password", e);
+			}
 		}
 	}

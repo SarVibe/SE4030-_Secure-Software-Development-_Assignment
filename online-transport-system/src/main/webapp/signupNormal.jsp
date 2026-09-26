@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="com.InvalidUserDefinedException.*" %>
+<%@ page import="com.util.XSSUtils" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -121,27 +123,32 @@
 	<div id="container">
 		<h1 style="color: red;">SignUp Here</h1>        
         
-	 	<form action="signUp" method="post">		
-           <input type="text" id="userName" name="userName" placeholder="User Name" required value="<%= request.getAttribute("userName") != null ? request.getAttribute("userName") : "" %>">
+	 	<form action="signUp" method="post">
+           <% if (request.getAttribute("errorMessage") != null) { %>
+           <p style="color:red; background-color: rgba(255, 255, 255, 0.9); font-weight: bold; padding: 6px; border-radius: 4px;"><%= XSSUtils.sanitize(String.valueOf(request.getAttribute("errorMessage"))) %></p> <% } %>		
+           <input type="text" id="userName" name="userName" placeholder="User Name" required value="<%= XSSUtils.sanitizeForHtmlAttribute(request.getAttribute("userName") != null ? String.valueOf(request.getAttribute("userName")) : "") %>">
            <% if (request.getAttribute("errorName") != null) { %>
-           <p style="color:white;"><%= request.getAttribute("errorName") %></p> <% } %>
+           <p style="color:white;"><%= XSSUtils.sanitize(String.valueOf(request.getAttribute("errorName"))) %></p> <% } %>
            <% if (request.getAttribute("errorNameExist") != null) { %>
-           <p style="color:white;"><%= request.getAttribute("errorNameExist") %></p> <% } %>
+           <p style="color:white;"><%= XSSUtils.sanitize(String.valueOf(request.getAttribute("errorNameExist"))) %></p> <% } %>
+
            
            <br><div style="margin-top: 12px; margin-bottom: 0px">
            <label for="male"><input type="radio" style="margin-left: 10px;" id="male" name="gender" value="male" required <%= "male".equals(request.getParameter("gender")) ? "checked" : "" %>>Male</label>
            <label for="female"><input type="radio" style="margin-left: 10px;" id="female" name="gender" value="female" required <%= "female".equals(request.getParameter("gender")) ? "checked" : "" %>>Female</label>
            </div><br><br>
 
-           <input type="email" id="email" name="email" placeholder="Enter your email" required value="<%= request.getAttribute("email") != null ? request.getAttribute("email") : "" %>">
+           <input type="email" id="email" name="email" placeholder="Enter your email" required value="<%= XSSUtils.sanitizeForHtmlAttribute(request.getAttribute("email") != null ? String.valueOf(request.getAttribute("email")) : "") %>">
+
           	
            <input type="password" id="password" name="password" placeholder="Enter your password" required style="height: 40px;">
            <% if (request.getAttribute("errorPassword") != null) { %>
-           <p style="color:white;"><%= request.getAttribute("errorPassword") %></p> <% } %>
+           <p style="color:white;"><%= XSSUtils.sanitize(String.valueOf(request.getAttribute("errorPassword"))) %></p> <% } %>
           
-           <input type="text" id="phone" name="phone" placeholder="Enter your phone number" required value="<%= request.getAttribute("phone") != null ? request.getAttribute("phone") : "" %>">
+           <input type="text" id="phone" name="phone" placeholder="Enter your phone number" required value="<%= XSSUtils.sanitizeForHtmlAttribute(request.getAttribute("phone") != null ? String.valueOf(request.getAttribute("phone")) : "") %>">
            <% if (request.getAttribute("errorPhoneNumber") != null) { %>
-           <p style="color:white;"><%= request.getAttribute("errorPhoneNumber") %></p> <% } %>
+           <p style="color:white;"><%= XSSUtils.sanitize(String.valueOf(request.getAttribute("errorPhoneNumber"))) %></p> <% } %>
+
            
            <br><br>
            <label>Role
@@ -150,9 +157,10 @@
            </label>
            <br><br>
            
-           <input type="text" id="address" name="address" placeholder="Enter your address" required value="<%= request.getAttribute("address") != null ? request.getAttribute("address") : "" %>">
+           <input type="text" id="address" name="address" placeholder="Enter your address" required value="<%= XSSUtils.sanitizeForHtmlAttribute(request.getAttribute("address") != null ? String.valueOf(request.getAttribute("address")) : "") %>">
            
-           <textarea id="comments" name="comments" rows="3" cols="50" placeholder="Enter any additional comments or preferences" required><%= request.getAttribute("comments") != null ? request.getAttribute("comments") : "" %></textarea>
+           <textarea id="comments" name="comments" rows="3" cols="50" placeholder="Enter any additional comments or preferences" required><%= XSSUtils.sanitize(request.getAttribute("comments") != null ? String.valueOf(request.getAttribute("comments")) : "") %></textarea>
+
            
            <br><label for="terms">
                 <input type="checkbox" id="terms" name="terms" required>

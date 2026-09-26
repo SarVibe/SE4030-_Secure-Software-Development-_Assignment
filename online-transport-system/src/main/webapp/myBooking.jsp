@@ -2,6 +2,14 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.Bookings.User" %>
+<%@ page import="com.util.XSSUtils" %>
+
+<%
+    if (session.getAttribute("userName") == null) {
+        response.sendRedirect("Login.jsp");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -91,12 +99,12 @@
                 for (User user : myBookings) {
         %>
                     <tr>
-                        <td><%= user.getPickupAddress() %></td>
-                        <td><%= user.getDropAddress() %></td>
-                        <td><%= user.getPickUpTime() %></td>
-                        <td><%= user.getBookDate() %></td>
-                        <td><%= user.getDriverName() %></td>
-                        <td><%= user.getAmount() %></td>
+                        <td><%= XSSUtils.sanitize(user.getPickupAddress()) %></td>
+                        <td><%= XSSUtils.sanitize(user.getDropAddress()) %></td>
+                        <td><%= XSSUtils.sanitize(String.valueOf(user.getPickUpTime())) %></td>
+                        <td><%= XSSUtils.sanitize(String.valueOf(user.getBookDate())) %></td>
+                        <td><%= XSSUtils.sanitize(user.getDriverName()) %></td>
+                        <td><%= XSSUtils.sanitize(String.valueOf(user.getAmount())) %></td>
                         <td>
                     </tr>
         <%
