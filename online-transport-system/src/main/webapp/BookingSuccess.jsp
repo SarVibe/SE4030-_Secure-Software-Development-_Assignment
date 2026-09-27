@@ -103,6 +103,25 @@
 			right: auto;
 			left: auto;
 		}
+
+		.btn-home {
+		    display: inline-block;
+		    margin-top: 25px;
+		    padding: 12px 30px;
+		    background-color: #06D001;
+		    color: white;
+		    font-size: 18px;
+		    font-weight: bold;
+		    border-radius: 8px;
+		    text-decoration: none;
+		    transition: background-color 0.3s ease, transform 0.2s ease;
+		}
+
+		.btn-home:hover {
+		    background-color: #059212;
+		    transform: translateY(-2px);
+		    color: white;
+		}
 	</style>
 </head>
 <body>
@@ -128,6 +147,7 @@
 			}
 		%>
 		
+		<a href="cusHome.jsp" class="btn-home">&#8592; Back to Home</a>
 	</div>
 </body>
 </html>

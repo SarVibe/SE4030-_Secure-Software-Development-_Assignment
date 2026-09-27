@@ -258,13 +258,8 @@
        <%@ page import="java.sql.*" %>
        
 <%
-    String url = "jdbc:mysql://localhost:3306/TransportDB";
-    String username = "root";
-    String password = "1234";
-    
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection con = DriverManager.getConnection(url, username, password);
+        Connection con = com.util.DBConfig.getConnection();
         Statement stmt = con.createStatement();
         String query = "SELECT * FROM faqs";
         ResultSet rs = stmt.executeQuery(query);

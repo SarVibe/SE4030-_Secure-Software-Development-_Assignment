@@ -65,8 +65,7 @@ public class SignupDriver extends HttpServlet {
 		// --- XSS Sanitization: sanitize all text inputs before use ---
 		String name             = XSSUtils.sanitize(request.getParameter("name"));
 		String address          = XSSUtils.sanitize(request.getParameter("address"));
-		String phonenumberString = XSSUtils.sanitize(request.getParameter("phonenumber"));
-		int phonenumber = Integer.parseInt(phonenumberString);
+		String phonenumber = XSSUtils.sanitize(request.getParameter("phonenumber"));
 		String vechilenumber   = XSSUtils.sanitize(request.getParameter("vechilenumber"));
 		String licensenumber   = XSSUtils.sanitize(request.getParameter("licensenumber"));
 		String expiryDateString = XSSUtils.sanitize(request.getParameter("expirydate"));
@@ -75,19 +74,27 @@ public class SignupDriver extends HttpServlet {
 		String confirmpassword  = pendingPassword;
 
         
-        java.sql.Date expiryDate = java.sql.Date.valueOf(expiryDateString);
+        java.sql.Date expiryDate = null;
+        List<String> errorMessages = new ArrayList<>();
+        try {
+            if (expiryDateString != null && !expiryDateString.trim().isEmpty()) {
+                expiryDate = java.sql.Date.valueOf(expiryDateString);
+            } else {
+                errorMessages.add("Expiry date cannot be empty");
+            }
+        } catch (IllegalArgumentException e) {
+            errorMessages.add("Invalid expiry date format");
+        }
         
         Date currentDate = new Date();
         
         java.sql.Date currentSqlDate = new java.sql.Date(currentDate.getTime());
         
-        List<String> errorMessages = new ArrayList<>();
-        
         try {
         	if (!name.startsWith("DD")) {
                 throw new InvalidUserNameException("Username must start with DD");
             }
-        	else if (!phonenumberString.startsWith("0")) {
+        	else if (!phonenumber.startsWith("0")) {
                 throw new InvalidPhoneNumberException("Phone Number must start with 0");
             }
         	else if (!vechilenumber.matches("^[A-Z]{2}\\s[A-Z]{3}\\s\\d{4}$")) {
@@ -96,8 +103,8 @@ public class SignupDriver extends HttpServlet {
         	else if (!licensenumber.matches("^[A-Z]{1}[0-9]{7}$")) {
     		      throw new invalidLicenceNumberException("Invalid Licence Number");
     		}
-        	else if (expiryDate.before(currentSqlDate)) {
-  		      throw new invalidLicenceNumberException("You're Licenece already expired");
+        	else if (expiryDate == null || expiryDate.before(currentSqlDate)) {
+  		      throw new invalidLicenceNumberException("You're Licenece already expired or date is invalid");
   		    }
         	else if (!password.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
     		      throw new InvalidPasswordException("Password must be atleast 8 characters long and include uppercase, lowercase, a digit, and a special character");

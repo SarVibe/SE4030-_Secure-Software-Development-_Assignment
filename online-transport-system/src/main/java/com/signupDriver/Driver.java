@@ -7,7 +7,7 @@ public class Driver {
 	String name;
 	String address;
 	String email;
-	int phonenumber;
+	String phonenumber;
 	String vechilenumber;
 	String licensenumber;
 	Date expirydate;
@@ -34,10 +34,10 @@ public class Driver {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public int getPhonenumber() {
+	public String getPhonenumber() {
 		return phonenumber;
 	}
-	public void setPhonenumber(int phonenumber) {
+	public void setPhonenumber(String phonenumber) {
 		this.phonenumber = phonenumber;
 	}
 	public String getVechilenumber() {
@@ -72,7 +72,7 @@ public class Driver {
 		this.confirmpassword = confirmpassword;
 	}
 	
-	public Driver(String name, String address, String email, int phonenumber, String vechilenumber, String licensenumber,
+	public Driver(String name, String address, String email, String phonenumber, String vechilenumber, String licensenumber,
 			Date expirydate, String password, String confirmpassword) {
 		super();
 		this.name = name;
@@ -86,7 +86,7 @@ public class Driver {
 		this.confirmpassword = confirmpassword;
 	}
 
-	public Driver(String name, String address, int phonenumber, String vechilenumber, String licensenumber,
+	public Driver(String name, String address, String phonenumber, String vechilenumber, String licensenumber,
 			Date expirydate, String password, String confirmpassword) {
 		this(name, address, null, phonenumber, vechilenumber, licensenumber, expirydate, password, confirmpassword);
 	}

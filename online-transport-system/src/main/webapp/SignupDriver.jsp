@@ -225,15 +225,7 @@
                     <input type="date" class="form-control" name="expirydate">
                   </fieldset>
 
-                  <fieldset class="form-group" style="display:none">
-                    <label>Password</label>
-                    <input type="password" class="form-control" name="password" required="required">
-                  </fieldset>
 
-                  <fieldset class="form-group" style="display:none">
-                    <label>Confirm Password</label>
-                    <input type="password" class="form-control" name="confirmpassword" required="required">
-                  </fieldset>
 
                   <button type="submit" class="btn btn-success">Save</button>
                   </form>

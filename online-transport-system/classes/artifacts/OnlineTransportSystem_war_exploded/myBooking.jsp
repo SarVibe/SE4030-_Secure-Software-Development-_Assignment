@@ -91,6 +91,7 @@
             <th>Booking Date</th>
             <th>Driver Name</th>
             <th>Pay Amount</th>
+            <th>Status</th>
         </tr>
 
         <%
@@ -103,9 +104,9 @@
                         <td><%= XSSUtils.sanitize(user.getDropAddress()) %></td>
                         <td><%= XSSUtils.sanitize(String.valueOf(user.getPickUpTime())) %></td>
                         <td><%= XSSUtils.sanitize(String.valueOf(user.getBookDate())) %></td>
-                        <td><%= XSSUtils.sanitize(user.getDriverName()) %></td>
-                        <td><%= XSSUtils.sanitize(String.valueOf(user.getAmount())) %></td>
-                        <td>
+                        <td><%= user.getDriverName() != null ? XSSUtils.sanitize(user.getDriverName()) : "Not assigned yet" %></td>
+                        <td><%= user.getAmount() > 0 ? XSSUtils.sanitize(String.valueOf(user.getAmount())) : "-" %></td>
+                        <td><%= XSSUtils.sanitize(user.getStatus()) %></td>
                     </tr>
         <%
                 }

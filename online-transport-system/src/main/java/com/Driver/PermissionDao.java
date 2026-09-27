@@ -35,7 +35,7 @@ public class PermissionDao {
         while (rs.next()) {
             String name = rs.getString("name");
             String address = rs.getString("address");
-            int phonenumber = rs.getInt("phonenumber");
+            String phonenumber = rs.getString("phonenumber");
             String vechilenumber = rs.getString("vechilenumber");
             String licensenumber = rs.getString("licensenumber");
             Date expirydate = rs.getDate("expirydate");

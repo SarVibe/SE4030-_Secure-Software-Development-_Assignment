@@ -12,6 +12,7 @@ public class User {
 	private Date bookDate;
 	private String DriverName;
 	private int amount;
+	private String status;
 	
 	public String getUserName() {
 		return userName;
@@ -77,6 +78,14 @@ public class User {
 		this.amount = amount;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public User(String userName, String pickupAddress, String dropAddress, String phoneNumber, LocalTime pickUpTime) {
 		super();
 		this.userName = userName;
@@ -86,7 +95,7 @@ public class User {
 		this.pickUpTime = pickUpTime;
 	}
 	
-	public User( String pickupAddress, String dropAddress, LocalTime pickUpTime, Date bookDate, String DriverName, int amount ) {
+	public User( String pickupAddress, String dropAddress, LocalTime pickUpTime, Date bookDate, String DriverName, int amount, String status ) {
 		super();
 		this.PickupAddress = pickupAddress;
 		this.DropAddress = dropAddress;
@@ -94,5 +103,6 @@ public class User {
 		this.bookDate = bookDate;
 		this.DriverName = DriverName;
 		this.amount = amount;
+		this.status = status;
 	}
 }
