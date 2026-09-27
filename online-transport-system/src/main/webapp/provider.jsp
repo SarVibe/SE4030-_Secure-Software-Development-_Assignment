@@ -266,6 +266,7 @@
                     <!-- Form for Answering Questions -->
                     <div class="faq-item">
                         <form class="answer-form" action="providerservlet" method="Post">
+                            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}" />
                             <h2>Question ID: <input type="text" name="questionID" class="question-input" required></h2>
 
                             <p>Answer:</p>

@@ -136,6 +136,7 @@
     <body>
         <div id="loginbox">
             <form action="Login" method="Post" id="loginform">
+                <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}" />
                 <h1>Login</h1>
                 <div class="input">
                     <label for="Username">User name:</label>

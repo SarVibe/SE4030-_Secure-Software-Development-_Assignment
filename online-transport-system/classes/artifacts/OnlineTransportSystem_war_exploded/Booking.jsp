@@ -132,6 +132,7 @@
 	<div id="outer-container">
 		<h1 id="heading">Get a ride</h1>
 		<form action="Booking" method ="post">			
+			<input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}" />
 			<input type="text" name="pickup" id="pickup" placeholder="Pickup Address" required value="<%= request.getAttribute("pickup") != null ? request.getAttribute("pickup") : "" %>">><br>
 			
 			<input type="text" name="drop" id="drop" placeholder="Destination Address" required value="<%= request.getAttribute("drop") != null ? request.getAttribute("drop") : "" %>">>

@@ -126,6 +126,7 @@
 					<h1 style="color: red;">SignUp Here</h1>
 
 					<form action="signUp" method="post">
+						<input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}" />
 						<% if (request.getAttribute("errorMessage") !=null) { %>
 							<p
 								style="color:red; background-color: rgba(255, 255, 255, 0.9); font-weight: bold; padding: 6px; border-radius: 4px;">
