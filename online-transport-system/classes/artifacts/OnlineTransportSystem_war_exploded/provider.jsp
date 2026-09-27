@@ -235,31 +235,32 @@
 
                     <!-- FAQ List from Database -->
                     <table border="1">
-                        <% String url="jdbc:mysql://localhost:3306/TransportDB" ; String username="root" ; String
-                            password="1234" ; try { Class.forName("com.mysql.cj.jdbc.Driver"); Connection
-                            con=DriverManager.getConnection(url, username, password); Statement
-                            stmt=con.createStatement(); String query="SELECT * FROM faqs" ; ResultSet
-                            rs=stmt.executeQuery(query); // Display table headers %>
+                        <% try {
+                            Connection con = com.util.DBConfig.getConnection();
+                            Statement stmt = con.createStatement();
+                            String query = "SELECT * FROM faqs";
+                            ResultSet rs = stmt.executeQuery(query);
+                        %>
                             <tr>
                                 <th>ID</th>
                                 <th>Question</th>
                                 <th>Answer</th>
                             </tr>
-                            <% // Loop through the result set and display data while (rs.next()) { int
-                                id=rs.getInt("faq_id"); String question=rs.getString("question"); String
-                                answer=rs.getString("answer"); if (question !=null && !question.trim().isEmpty()) { %>
+                        <%
+                            while (rs.next()) {
+                                int id = rs.getInt("faq_id");
+                                String question = rs.getString("question");
+                                String answer = rs.getString("answer");
+                                if (question != null && !question.trim().isEmpty()) {
+                        %>
                                 <tr>
-                                    <td>
-                                        <%= id %>
-                                    </td>
-                                    <td>
-                                        <%= question %>
-                                    </td>
-                                    <td>
-                                        <%= answer %>
-                                    </td>
+                                    <td><%= id %></td>
+                                    <td><%= question %></td>
+                                    <td><%= answer %></td>
                                 </tr>
-                                <% } } } catch (Exception e) { out.println("There are no questions"); } %>
+                        <%          }
+                            }
+                        } catch (Exception e) { out.println("There are no questions"); } %>
                     </table>
 
                     <br>

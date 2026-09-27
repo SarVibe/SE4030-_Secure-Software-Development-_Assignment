@@ -27,14 +27,15 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@WebServlet({"/google-login", "/google-callback"})
+@WebServlet({ "/google-login", "/google-callback" })
 public class GoogleAuth extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final String REDIRECT_URI = "http://localhost:8080/OnlineTransportSystem/google-callback";
     private static final SecureRandom RANDOM = new SecureRandom();
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
         if ("/google-login".equals(request.getServletPath())) {
             startLogin(request, response);
         } else {
@@ -42,7 +43,8 @@ public class GoogleAuth extends HttpServlet {
         }
     }
 
-    private void startLogin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    private void startLogin(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
         String clientId = setting("GOOGLE_CLIENT_ID");
         if (clientId == null || setting("GOOGLE_CLIENT_SECRET") == null) {
             showError(request, response, "Google login is not configured on the server.");
@@ -65,14 +67,16 @@ public class GoogleAuth extends HttpServlet {
         response.sendRedirect(location);
     }
 
-    private void completeLogin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    private void completeLogin(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
         HttpSession session = request.getSession(false);
         String expectedState = session == null ? null : (String) session.getAttribute("googleOAuthState");
         if (session != null) {
             session.removeAttribute("googleOAuthState");
         }
         String actualState = value(request.getParameter("state"));
-        if (expectedState == null || !MessageDigest.isEqual(expectedState.getBytes(StandardCharsets.UTF_8), actualState.getBytes(StandardCharsets.UTF_8))) {
+        if (expectedState == null || !MessageDigest.isEqual(expectedState.getBytes(StandardCharsets.UTF_8),
+                actualState.getBytes(StandardCharsets.UTF_8))) {
             showError(request, response, "Google login could not be verified. Please try again.");
             return;
         }
@@ -112,7 +116,8 @@ public class GoogleAuth extends HttpServlet {
                 }
                 session.setAttribute("pendingSignupRole", role);
                 session.setAttribute("pendingSignupEmail", email);
-                session.setAttribute("pendingSignupPassword", "Google!Aa1?" + UUID.randomUUID().toString().replace("-", ""));
+                session.setAttribute("pendingSignupPassword",
+                        "Google!Aa1?" + UUID.randomUUID().toString().replace("-", ""));
                 session.removeAttribute("googleOAuthMode");
                 session.removeAttribute("googleOAuthRole");
                 response.sendRedirect("Driver".equals(role) ? "SignupDriver.jsp" : "signupNormal.jsp");
@@ -120,11 +125,13 @@ public class GoogleAuth extends HttpServlet {
             }
             String userName = findRegisteredUser(email);
             if (userName == null) {
-                showError(request, response, "Please sign up before login. This Google email is not registered or approved.");
+                showError(request, response,
+                        "Please sign up before login. This Google email is not registered or approved.");
                 return;
             }
             request.getSession(true).setAttribute("userName", userName);
-            response.sendRedirect(userName.startsWith("DD") ? "DriverHomeServlet" : userName.startsWith("AD") ? "AdminHome.jsp" : "cusHome.jsp");
+            response.sendRedirect(userName.startsWith("DD") ? "DriverHomeServlet"
+                    : userName.startsWith("AD") ? "AdminHome.jsp" : "cusHome.jsp");
         } catch (InterruptedException exception) {
             Thread.currentThread().interrupt();
             showError(request, response, "Google login was interrupted.");
@@ -133,7 +140,8 @@ public class GoogleAuth extends HttpServlet {
         }
     }
 
-    private String postToken(String code, String clientId, String clientSecret) throws IOException, InterruptedException {
+    private String postToken(String code, String clientId, String clientSecret)
+            throws IOException, InterruptedException {
         String body = "code=" + encode(code) + "&client_id=" + encode(clientId) + "&client_secret="
                 + encode(clientSecret) + "&redirect_uri=" + encode(REDIRECT_URI) + "&grant_type=authorization_code";
         HttpRequest request = HttpRequest.newBuilder(URI.create("https://oauth2.googleapis.com/token"))
@@ -150,7 +158,8 @@ public class GoogleAuth extends HttpServlet {
 
     private String findRegisteredUser(String email) throws SQLException {
         try (Connection connection = DBConfig.getConnection()) {
-            try (PreparedStatement lookup = connection.prepareStatement("SELECT userName, status FROM RegisterDetails WHERE email = ?")) {
+            try (PreparedStatement lookup = connection
+                    .prepareStatement("SELECT userName, status FROM RegisterDetails WHERE email = ?")) {
                 lookup.setString(1, email);
                 try (ResultSet result = lookup.executeQuery()) {
                     if (result.next()) {
@@ -183,10 +192,16 @@ public class GoogleAuth extends HttpServlet {
         return value == null || value.isBlank() ? System.getProperty(name) : value;
     }
 
-    private static String encode(String value) { return URLEncoder.encode(value, StandardCharsets.UTF_8); }
-    private static String value(String value) { return value == null ? "" : value; }
+    private static String encode(String value) {
+        return URLEncoder.encode(value, StandardCharsets.UTF_8);
+    }
 
-    private void showError(HttpServletRequest request, HttpServletResponse response, String message) throws ServletException, IOException {
+    private static String value(String value) {
+        return value == null ? "" : value;
+    }
+
+    private void showError(HttpServletRequest request, HttpServletResponse response, String message)
+            throws ServletException, IOException {
         request.setAttribute("errorMessage", message);
         request.getRequestDispatcher("Login.jsp").forward(request, response);
     }

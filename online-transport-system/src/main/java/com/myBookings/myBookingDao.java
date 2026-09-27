@@ -25,13 +25,15 @@ public class myBookingDao {
 			
 			con = com.util.DBConfig.getConnection();
 			
-			String query = "select BD.pickupAddress, BD.dropAddress, BD.pickUpTime, BD.bookDate, BD.DriverName, PD.Amount "
-					+ "from bookingDetails BD, PaymentDetails PD "
-					+ "where BD.userName = PD.userName and PD.payDate = BD.bookDate and BD.userName= ? and BD.status = ?";
+			String query = "SELECT BD.pickupAddress, BD.dropAddress, BD.pickUpTime, BD.bookDate, " +
+					"BD.DriverName, BD.status, COALESCE(PD.Amount, 0) AS Amount " +
+					"FROM bookingDetails BD " +
+					"LEFT JOIN PaymentDetails PD ON BD.userName = PD.userName AND PD.payDate = BD.bookDate " +
+					"WHERE BD.userName = ? " +
+					"ORDER BY BD.bookDate DESC";
 			
 			PreparedStatement pst = con.prepareStatement(query);
 			pst.setString(1, username);
-			pst.setString(2, "Accepted");
 		
 	        ResultSet rs = pst.executeQuery();
 
@@ -42,10 +44,11 @@ public class myBookingDao {
 	            Time pickTime = rs.getTime("pickUpTime");
 	            Date bookDate = rs.getDate("bookDate");
 	            String DriverName = rs.getString("DriverName");
+	            String status = rs.getString("status");
 	            	            
 	            LocalTime pickUpTime = pickTime.toLocalTime();
 	            
-	            bookingList.add( new User( pickupAddress, dropAddress, pickUpTime, bookDate, DriverName, Amount ) );
+	            bookingList.add( new User( pickupAddress, dropAddress, pickUpTime, bookDate, DriverName, Amount, status ) );
 
 	    }
 			

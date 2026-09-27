@@ -25,7 +25,7 @@ public class signupDriverDao {
 			
 			PreparedStatement pst1 = con.prepareStatement(query1);
 		
-	        ResultSet rs = pst1.executeQuery(query1);
+	        ResultSet rs = pst1.executeQuery();
 
 	        while (rs.next()) {
 	        	names.add(rs.getString("name"));
@@ -49,7 +49,7 @@ public class signupDriverDao {
 			pst.setString(1, driver.getName());
 			pst.setString(2, driver.getAddress());
 			pst.setString(3, driver.getEmail());
-			pst.setInt(4, driver.getPhonenumber());
+			pst.setString(4, driver.getPhonenumber());
 			pst.setString(5, driver.getVechilenumber());
 			pst.setString(6, driver.getLicensenumber());
 			pst.setDate(7, driver.getExpirydate());

@@ -97,6 +97,25 @@
             font-size: 20px;
 		}
 		
+		.btn-home {
+		    display: block;
+		    width: 45%;
+		    padding: 10px;
+		    margin: 5px auto 15px;
+		    border: 1px solid #ccc;
+		    border-radius: 10px;
+		    background-color: #06D001;
+		    color: white;
+		    font-size: 18px;
+		    text-align: center;
+		    text-decoration: none;
+		    transition: background-color 0.3s ease;
+		}
+
+		.btn-home:hover {
+		    background-color: #059212;
+		}
+		
 		#heading {
 			text-align: center; 
 			font-weight: bold;
@@ -147,6 +166,9 @@
            	
 			<input type="submit" value="Book Now">
 		</form>
+	</div>
+	<div style="position: relative; z-index: 1; width: 40%; margin-left: 50px; margin-top: 10px;">
+		<a href="cusHome.jsp" class="btn-home">&#8592; Back to Home</a>
 	</div>
 	
 	
