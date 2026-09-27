@@ -1,7 +1,6 @@
 package com.signupDriver;
 
 import java.sql.Connection;
-// import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,18 +42,19 @@ public class signupDriverDao {
 	        
 
 			
-			String query = "insert into driver_Details (name,address,phonenumber,vechilenumber,licensenumber,expirydate,password,confirmpassword) values(?,?,?,?,?,?,?,?)";
+			String query = "insert into driver_Details (name,address,email,phonenumber,vechilenumber,licensenumber,expirydate,password,confirmpassword) values(?,?,?,?,?,?,?,?,?)";
 			
 			PreparedStatement pst = con.prepareStatement(query);
 			
 			pst.setString(1, driver.getName());
 			pst.setString(2, driver.getAddress());
-			pst.setInt(3, driver.getPhonenumber());
-			pst.setString(4, driver.getVechilenumber());
-			pst.setString(5, driver.getLicensenumber());
-			pst.setDate(6, driver.getExpirydate());
-			pst.setString(7, PasswordUtils.hashPassword(driver.getPassword()));
-			pst.setString(8, PasswordUtils.hashPassword(driver.getConfirmpassword()));
+			pst.setString(3, driver.getEmail());
+			pst.setInt(4, driver.getPhonenumber());
+			pst.setString(5, driver.getVechilenumber());
+			pst.setString(6, driver.getLicensenumber());
+			pst.setDate(7, driver.getExpirydate());
+			pst.setString(8, PasswordUtils.hashPassword(driver.getPassword()));
+			pst.setString(9, PasswordUtils.hashPassword(driver.getConfirmpassword()));
 			
 			int rowsAffected = pst.executeUpdate();
 		    

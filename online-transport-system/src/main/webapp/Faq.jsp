@@ -220,6 +220,7 @@
             <div class="add-question">
                 <h3>Ask a Question:</h3>
                 <form action="Faqservlet" method="Post">
+                    <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}" />
                     <input type="text" id="question-input" name="input" placeholder="Your question here...">
                     <button class="submit-btn" type="submit" onclick="validateForm()">Submit</button>
                     <div id="error-message" class="message error-message" style="display:none;">Please enter a question.</div>

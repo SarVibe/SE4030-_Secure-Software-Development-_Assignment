@@ -40,9 +40,9 @@ public class Login extends HttpServlet {
         }
 
         LoginDAO loginDAO = new LoginDAO();
-        boolean isValidUser = loginDAO.validateUser(un, pw);
+        LoginDAO.AuthenticationResult authenticationResult = loginDAO.authenticateUser(un, pw);
 
-        if (isValidUser) {
+        if (authenticationResult == LoginDAO.AuthenticationResult.SUCCESS) {
             request.getSession().setAttribute("userName", un);
             if( un.startsWith("CT") ) {
             	 response.sendRedirect("cusHome.jsp");
@@ -53,7 +53,10 @@ public class Login extends HttpServlet {
     		}
            
         } else {
-            request.setAttribute("errorMessage", "Invalid Login, Please try again.");
+            String errorMessage = authenticationResult == LoginDAO.AuthenticationResult.LOCKED
+                    ? "Too many failed login attempts. Login is disabled for 5 minutes."
+                    : "Invalid Login, Please try again.";
+            request.setAttribute("errorMessage", errorMessage);
             request.getRequestDispatcher("Login.jsp").forward(request, response);
         }
     }

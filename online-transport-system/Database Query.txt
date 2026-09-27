@@ -6,7 +6,7 @@ use TransportDB;
 CREATE TABLE RegisterDetails (
 	userName varchar(30) primary key,
     gender varchar(10),
-    email varchar(30),
+        email varchar(255),
     password varchar(255),
     phone char(10),
     role varchar(10),
@@ -18,6 +18,7 @@ CREATE TABLE RegisterDetails (
 create table driver_Details (
 	name varchar(50) primary key,
 	address varchar(250),
+    email varchar(255),
 	phonenumber int,
 	vechilenumber varchar(25),
 	licensenumber varchar(25),
@@ -64,3 +65,18 @@ select * from RegisterDetails;
 select * from driver_Details;
 select * from PaymentDetails;
 select * from faqs;
+
+INSERT INTO RegisterDetails
+(userName, gender, email, password, phone, role, address, comments, status)
+VALUES
+(
+  'ADAdmin01',
+  'Other',
+  'admin@example.com',
+  TO_BASE64(UNHEX(SHA2('AdminPassword123!', 256))),
+  '0771234567',
+  'Admin',
+  'Colombo',
+  'System administrator',
+  'Accepted'
+);

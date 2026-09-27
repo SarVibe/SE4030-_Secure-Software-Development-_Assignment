@@ -94,6 +94,64 @@
                 background-color: #48c6a0;
             }
 
+            .google-login {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                width: 100%;
+                box-sizing: border-box;
+                min-height: 44px;
+                margin-top: 14px;
+                padding: 10px 16px;
+                text-align: center;
+                background-color: #fff;
+                color: #333;
+                border: 1px solid #b9b9b9;
+                border-radius: 6px;
+                font-size: 15px;
+                font-weight: 600;
+                text-transform: none;
+                letter-spacing: 0;
+                text-decoration: none;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+                transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+            }
+
+            .google-login::before {
+                content: "G";
+                color: #4285f4;
+                font-size: 20px;
+                font-weight: 700;
+                line-height: 1;
+            }
+
+            .google-login:hover {
+                color: #222;
+                background-color: #f8f9fa;
+                border-color: #8a8a8a;
+                box-shadow: 0 3px 7px rgba(0, 0, 0, 0.12);
+            }
+
+            .login-divider {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-top: 18px;
+                color: #777;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            .login-divider::before,
+            .login-divider::after {
+                content: "";
+                flex: 1;
+                height: 1px;
+                background-color: #d1d1d1;
+            }
+
             a {
                 color: #0066cc;
                 text-decoration: none;
@@ -136,6 +194,7 @@
     <body>
         <div id="loginbox">
             <form action="Login" method="Post" id="loginform">
+                <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}" />
                 <h1>Login</h1>
                 <div class="input">
                     <label for="Username">User name:</label>
@@ -157,6 +216,10 @@
                 </div>
                 <div>
                     <button type="submit"><b>Login</b></button>
+                </div>
+                <div class="login-divider">or</div>
+                <div>
+                    <a class="google-login" href="google-login">Continue with Google</a>
                 </div>
                 
                  <% 

@@ -50,9 +50,9 @@
 </head>
 <body>
 	<div id="buttonbox">
-		<a href="signupNormal.jsp"><button class="btn">Create an account for Admin</button></a><br>
-		<a href="signupNormal.jsp"><button class="btn">Create an account for Customer</button></a><br>
-		<a href="SignupDriver.jsp"><button class="btn">Create an account for Driver</button></a>
+		<a href="signupStart.jsp?role=Admin"><button class="btn">Create an account for Admin</button></a><br>
+		<a href="signupStart.jsp?role=Passenger"><button class="btn">Create an account for Customer</button></a><br>
+		<a href="signupStart.jsp?role=Driver"><button class="btn">Create an account for Driver</button></a>
 	</div>
 </body>
 </html>
