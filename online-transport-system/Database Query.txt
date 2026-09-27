@@ -6,7 +6,7 @@ use TransportDB;
 CREATE TABLE RegisterDetails (
 	userName varchar(30) primary key,
     gender varchar(10),
-    email varchar(30),
+        email varchar(255),
     password varchar(255),
     phone char(10),
     role varchar(10),
