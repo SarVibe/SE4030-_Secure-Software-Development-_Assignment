@@ -42,16 +42,24 @@ public class signUp extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		String pendingRole = session == null ? null : (String) session.getAttribute("pendingSignupRole");
+		String pendingEmail = session == null ? null : (String) session.getAttribute("pendingSignupEmail");
+		String pendingPassword = session == null ? null : (String) session.getAttribute("pendingSignupPassword");
+		if (pendingRole == null || pendingEmail == null || pendingPassword == null) {
+			response.sendRedirect("signupOption.jsp");
+			return;
+		}
 		// TODO Auto-generated method stub
 		//doGet(request, response);
 		// --- XSS Sanitization: sanitize all text inputs before use ---
 		String userName = XSSUtils.sanitize(request.getParameter("userName"));
 		String gender   = XSSUtils.sanitize(request.getParameter("gender"));
-		String email    = XSSUtils.sanitize(request.getParameter("email"));
+		String email    = pendingEmail;
 		// Password is NOT sanitized here - it is validated via strict regex.
-		String password = request.getParameter("password");
+		String password = pendingPassword;
 		String phone    = XSSUtils.sanitize(request.getParameter("phone"));
-		String role     = XSSUtils.sanitize(request.getParameter("role"));
+		String role     = pendingRole;
 		String address  = XSSUtils.sanitize(request.getParameter("address"));
 		String comments = XSSUtils.sanitize(request.getParameter("comments"));		
 		
@@ -112,7 +120,9 @@ public class signUp extends HttpServlet {
 		
 	  try {
 	      if( registerDao.Insert(user) ) {
-	    	  HttpSession session = request.getSession(); 
+	    	  session.removeAttribute("pendingSignupRole");
+	    	  session.removeAttribute("pendingSignupEmail");
+	    	  session.removeAttribute("pendingSignupPassword");
               // Store the user information in the session
               session.setAttribute("userName", userName);
               

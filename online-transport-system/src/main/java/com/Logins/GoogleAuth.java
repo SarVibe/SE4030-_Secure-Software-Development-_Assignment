@@ -49,7 +49,15 @@ public class GoogleAuth extends HttpServlet {
             return;
         }
         String state = UUID.randomUUID().toString();
-        request.getSession(true).setAttribute("googleOAuthState", state);
+        HttpSession session = request.getSession(true);
+        session.setAttribute("googleOAuthState", state);
+        session.setAttribute("googleOAuthMode", "signup".equals(request.getParameter("mode")) ? "signup" : "login");
+        String role = request.getParameter("role");
+        if ("Passenger".equals(role) || "Admin".equals(role) || "Driver".equals(role)) {
+            session.setAttribute("googleOAuthRole", role);
+        } else {
+            session.removeAttribute("googleOAuthRole");
+        }
         String location = "https://accounts.google.com/o/oauth2/v2/auth?client_id=" + encode(clientId)
                 + "&redirect_uri=" + encode(REDIRECT_URI)
                 + "&response_type=code&scope=" + encode("openid email profile")
@@ -96,9 +104,27 @@ public class GoogleAuth extends HttpServlet {
                 showError(request, response, "Google account verification failed.");
                 return;
             }
-            String userName = findOrCreateCustomer(email);
+            if ("signup".equals(session == null ? null : session.getAttribute("googleOAuthMode"))) {
+                String role = session == null ? null : (String) session.getAttribute("googleOAuthRole");
+                if (role == null) {
+                    showError(request, response, "Choose a signup role first.");
+                    return;
+                }
+                session.setAttribute("pendingSignupRole", role);
+                session.setAttribute("pendingSignupEmail", email);
+                session.setAttribute("pendingSignupPassword", "Google!Aa1?" + UUID.randomUUID().toString().replace("-", ""));
+                session.removeAttribute("googleOAuthMode");
+                session.removeAttribute("googleOAuthRole");
+                response.sendRedirect("Driver".equals(role) ? "SignupDriver.jsp" : "signupNormal.jsp");
+                return;
+            }
+            String userName = findRegisteredUser(email);
+            if (userName == null) {
+                showError(request, response, "Please sign up before login. This Google email is not registered or approved.");
+                return;
+            }
             request.getSession(true).setAttribute("userName", userName);
-            response.sendRedirect("cusHome.jsp");
+            response.sendRedirect(userName.startsWith("DD") ? "DriverHomeServlet" : userName.startsWith("AD") ? "AdminHome.jsp" : "cusHome.jsp");
         } catch (InterruptedException exception) {
             Thread.currentThread().interrupt();
             showError(request, response, "Google login was interrupted.");
@@ -122,46 +148,27 @@ public class GoogleAuth extends HttpServlet {
         return result.statusCode() == 200 ? result.body() : "{}";
     }
 
-    private String findOrCreateCustomer(String email) throws SQLException {
+    private String findRegisteredUser(String email) throws SQLException {
         try (Connection connection = DBConfig.getConnection()) {
-            try (PreparedStatement lookup = connection.prepareStatement("SELECT userName FROM RegisterDetails WHERE email = ?")) {
+            try (PreparedStatement lookup = connection.prepareStatement("SELECT userName, status FROM RegisterDetails WHERE email = ?")) {
                 lookup.setString(1, email);
                 try (ResultSet result = lookup.executeQuery()) {
                     if (result.next()) {
-                        return result.getString(1);
+                        String userName = result.getString("userName");
+                        if (!userName.startsWith("AD") || "Accepted".equalsIgnoreCase(result.getString("status"))) {
+                            return userName;
+                        }
+                        return null;
                     }
                 }
             }
-            String userName = "CT" + randomCustomerId();
-            String password = hash(UUID.randomUUID().toString());
-            try (PreparedStatement insert = connection.prepareStatement(
-                    "INSERT INTO RegisterDetails(userName, gender, email, password, phone, role, address, comments, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
-                insert.setString(1, userName);
-                insert.setString(2, "Other");
-                insert.setString(3, email);
-                insert.setString(4, password);
-                insert.setString(5, "0000000000");
-                insert.setString(6, "Customer");
-                insert.setString(7, "Google account");
-                insert.setString(8, "Created with Google");
-                insert.setString(9, "Accepted");
-                insert.executeUpdate();
+            try (PreparedStatement lookupDriver = connection.prepareStatement(
+                    "SELECT name FROM driver_Details WHERE email = ? AND status = 'Accepted'")) {
+                lookupDriver.setString(1, email);
+                try (ResultSet result = lookupDriver.executeQuery()) {
+                    return result.next() ? result.getString("name") : null;
+                }
             }
-            return userName;
-        }
-    }
-
-    private String randomCustomerId() {
-        byte[] bytes = new byte[6];
-        RANDOM.nextBytes(bytes);
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes).toUpperCase(Locale.ROOT);
-    }
-
-    private String hash(String value) {
-        try {
-            return Base64.getEncoder().encodeToString(MessageDigest.getInstance("SHA-256").digest(value.getBytes(StandardCharsets.UTF_8)));
-        } catch (Exception exception) {
-            throw new IllegalStateException("Unable to create account", exception);
         }
     }
 
