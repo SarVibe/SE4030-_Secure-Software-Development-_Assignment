@@ -134,8 +134,7 @@
 							</p>
 							<% } %>
 								<input type="text" id="userName" name="userName" placeholder="User Name" required
-									value="<%= XSSUtils.sanitizeForHtmlAttribute(request.getAttribute(" userName")
-									!=null ? String.valueOf(request.getAttribute("userName")) : "" ) %>">
+									value="<%= XSSUtils.sanitizeForHtmlAttribute(request.getAttribute("userName") != null ? String.valueOf(request.getAttribute("userName")) : "") %>">
 								<% if (request.getAttribute("errorName") !=null) { %>
 									<p style="color:white;">
 										<%= XSSUtils.sanitize(String.valueOf(request.getAttribute("errorName"))) %>
@@ -163,9 +162,7 @@
 
 												<input type="email" id="email" name="email"
 													placeholder="Enter your email" required
-													value="<%= XSSUtils.sanitizeForHtmlAttribute(request.getAttribute("
-													email") !=null ? String.valueOf(request.getAttribute("email")) : ""
-													) %>">
+													value="<%= XSSUtils.sanitizeForHtmlAttribute(request.getAttribute("email") != null ? String.valueOf(request.getAttribute("email")) : "") %>">
 
 
 												<input type="password" id="password" name="password"
@@ -179,9 +176,7 @@
 
 														<input type="text" id="phone" name="phone"
 															placeholder="Enter your phone number" required
-															value="<%= XSSUtils.sanitizeForHtmlAttribute(request.getAttribute("
-															phone") !=null ?
-															String.valueOf(request.getAttribute("phone")) : "" ) %>">
+															value="<%= XSSUtils.sanitizeForHtmlAttribute(request.getAttribute("phone") != null ? String.valueOf(request.getAttribute("phone")) : "") %>">
 														<% if (request.getAttribute("errorPhoneNumber") !=null) { %>
 															<p style="color:white;">
 																<%= XSSUtils.sanitize(String.valueOf(request.getAttribute("errorPhoneNumber")))
@@ -206,10 +201,7 @@
 
 																<input type="text" id="address" name="address"
 																	placeholder="Enter your address" required
-																	value="<%= XSSUtils.sanitizeForHtmlAttribute(request.getAttribute("
-																	address") !=null ?
-																	String.valueOf(request.getAttribute("address")) : ""
-																	) %>">
+																	value="<%= XSSUtils.sanitizeForHtmlAttribute(request.getAttribute("address") != null ? String.valueOf(request.getAttribute("address")) : "") %>">
 
 																<textarea id="comments" name="comments" rows="3"
 																	cols="50"
