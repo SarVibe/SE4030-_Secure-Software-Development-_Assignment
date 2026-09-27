@@ -130,6 +130,7 @@
                         
                         <td>
                             <form action="AcceptAdmin" method="post">
+                                <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}" />
                                 <input type="hidden" name="allow" value="<%= XSSUtils.sanitizeForHtmlAttribute(admin.getUserName()) %>"/>
                                 <input type="submit" value="Allow" />
                             </form>

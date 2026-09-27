@@ -175,6 +175,7 @@
                   <c:if test="${user == null}">
                     <form action="CRUD" method="post">
                   </c:if>
+                  <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}" />
 
                   <caption>
                     <h2>

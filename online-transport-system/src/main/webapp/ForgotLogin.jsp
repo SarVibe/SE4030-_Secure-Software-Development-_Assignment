@@ -101,6 +101,7 @@
     <div class="container">
         <h1>Forgot Password</h1>
         <form action="Forgotservlet" method="POST">
+            <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}" />
             <label for="Username">User name:</label>
             <input type="text" id="Username" name="Username" required>
 

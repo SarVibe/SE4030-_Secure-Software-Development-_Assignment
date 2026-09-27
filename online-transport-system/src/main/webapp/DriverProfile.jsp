@@ -120,6 +120,7 @@
 
             <!-- Form to send driverName to the servlet -->
             <form action="DriverProfile" method="POST">
+                <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}" />
                 <!-- Hidden input to send the driverName -->
                 <input type="hidden" name="driverName" value="<%= XSSUtils.sanitizeForHtmlAttribute(request.getAttribute("driverName") != null ? String.valueOf(request.getAttribute("driverName")) : "") %>">
 

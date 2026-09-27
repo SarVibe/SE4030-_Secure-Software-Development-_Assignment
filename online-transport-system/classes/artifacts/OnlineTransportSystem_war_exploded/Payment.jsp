@@ -95,6 +95,7 @@
 <body >
     
     <form action="Payment" method="post">
+        <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}" />
         <label for="amount">Amount:</label>
         <input type="text" id="amount" name="amount" ><br>
 

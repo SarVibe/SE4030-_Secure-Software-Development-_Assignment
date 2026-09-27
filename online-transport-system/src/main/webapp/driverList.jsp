@@ -142,11 +142,13 @@
                         <td><%= XSSUtils.sanitize(String.valueOf(driver.getExpirydate())) %></td>
                         <td>
                             <form action="AllowDriver" method="post">
+                                <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}" />
                                 <input type="hidden" name="allow" value="<%= XSSUtils.sanitizeForHtmlAttribute(driver.getName()) %>"/>
                                 <input type="submit" value="Allow" />
                             </form>
                             
                             <form action="DeleteDriver" method="post">
+                                <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}" />
                                 <input type="hidden" name="delete" value="<%= XSSUtils.sanitizeForHtmlAttribute(driver.getName()) %>"/>
                                 <input type="submit" value="Deny" id="deny" />
                             </form>

@@ -166,6 +166,7 @@
 
         <!-- Form to send driverName to the servlet -->
         <form action="DriverProfile.jsp" method="POST">
+           <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}" />
            <button type="submit" class="view-profile-btn" id="view-profile-button">View Profile</button>
         </form>
     </div>
@@ -184,6 +185,7 @@
             <p><strong>Pickup Time :</strong> <%= XSSUtils.sanitize(String.valueOf(booking.getPickUpTime())) %></p>
             <p><strong>Phone Number :</strong> <%= XSSUtils.sanitize(booking.getPhoneNumber()) %></p>
             <form action="acceptORdenyservlet" method="post">
+                <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}" />
                 <input type="hidden" name="NameOfBookingUser" value="<%= XSSUtils.sanitizeForHtmlAttribute(booking.getUserName()) %>">
                 <input type="submit" name="Accept" value="Accept" class="accept-btn">
             </form>
@@ -197,6 +199,7 @@
 
     <!-- Finish Trip Button, initially hidden -->
     <form action="acceptORdenyservlet" method="post">
+        <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}" />
         <input type="submit" name="Finish-Trip" value="Finish Trip" id="finishTrip-btn" onclick="finishTrip(); return false;">
     </form> 
 </body>
