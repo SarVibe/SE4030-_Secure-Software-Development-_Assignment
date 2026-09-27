@@ -49,6 +49,14 @@ public class SignupDriver extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		String pendingRole = session == null ? null : (String) session.getAttribute("pendingSignupRole");
+		String pendingEmail = session == null ? null : (String) session.getAttribute("pendingSignupEmail");
+		String pendingPassword = session == null ? null : (String) session.getAttribute("pendingSignupPassword");
+		if (!"Driver".equals(pendingRole) || pendingEmail == null || pendingPassword == null) {
+			response.sendRedirect("signupOption.jsp");
+			return;
+		}
 		// TODO Auto-generated method stub
 		//doGet(request, response);
 		
@@ -63,8 +71,8 @@ public class SignupDriver extends HttpServlet {
 		String licensenumber   = XSSUtils.sanitize(request.getParameter("licensenumber"));
 		String expiryDateString = XSSUtils.sanitize(request.getParameter("expirydate"));
 		// Passwords are NOT sanitized here - they are validated via strict regex.
-		String password         = request.getParameter("password");
-		String confirmpassword  = request.getParameter("confirmpassword");
+		String password         = pendingPassword;
+		String confirmpassword  = pendingPassword;
 
         
         java.sql.Date expiryDate = java.sql.Date.valueOf(expiryDateString);
@@ -117,13 +125,15 @@ public class SignupDriver extends HttpServlet {
             return;
         }
 		
-		Driver driver = new Driver(name , address , phonenumber , vechilenumber , licensenumber , expiryDate , password , confirmpassword);
+		Driver driver = new Driver(name , address , pendingEmail, phonenumber , vechilenumber , licensenumber , expiryDate , password , confirmpassword);
 		
 		signupDriverDao cruddao = new signupDriverDao();
 		
 		try {
 			if(cruddao.insert(driver)) {
-				HttpSession session = request.getSession(); 
+				session.removeAttribute("pendingSignupRole");
+				session.removeAttribute("pendingSignupEmail");
+				session.removeAttribute("pendingSignupPassword");
 	            // Store the user information in the session
 	            session.setAttribute("Name", name);
 	              

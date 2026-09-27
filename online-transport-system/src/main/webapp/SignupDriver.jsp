@@ -172,9 +172,8 @@
                   <c:if test="${user != null}">
                     <form action="SignupDriver" method="post">
                   </c:if>
-                  <c:if test="${user == null}">
-                    <form action="CRUD" method="post">
-                  </c:if>
+                  <form action="SignupDriver" method="post">
+                  <% if (session.getAttribute("pendingSignupRole") == null) { response.sendRedirect("signupOption.jsp"); return; } %>
                   <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}" />
 
                   <caption>
@@ -191,6 +190,10 @@
                   <c:if test="${user != null}">
                     <input type="hidden" name="id" value="<c:out value='${user.id}' />" />
                   </c:if>
+
+                  <input type="hidden" name="email" value="<%= session.getAttribute("pendingSignupEmail") %>">
+                  <input type="hidden" name="password" value="<%= session.getAttribute("pendingSignupPassword") %>">
+                  <input type="hidden" name="confirmpassword" value="<%= session.getAttribute("pendingSignupPassword") %>">
 
                   <fieldset class="form-group">
                     <label>User Name</label>
@@ -222,12 +225,12 @@
                     <input type="date" class="form-control" name="expirydate">
                   </fieldset>
 
-                  <fieldset class="form-group">
+                  <fieldset class="form-group" style="display:none">
                     <label>Password</label>
                     <input type="password" class="form-control" name="password" required="required">
                   </fieldset>
 
-                  <fieldset class="form-group">
+                  <fieldset class="form-group" style="display:none">
                     <label>Confirm Password</label>
                     <input type="password" class="form-control" name="confirmpassword" required="required">
                   </fieldset>

@@ -6,6 +6,7 @@ import java.sql.Date;
 public class Driver {
 	String name;
 	String address;
+	String email;
 	int phonenumber;
 	String vechilenumber;
 	String licensenumber;
@@ -21,6 +22,14 @@ public class Driver {
 	}
 	public String getAddress() {
 		return address;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public void setAddress(String address) {
 		this.address = address;
@@ -63,16 +72,22 @@ public class Driver {
 		this.confirmpassword = confirmpassword;
 	}
 	
-	public Driver(String name, String address, int phonenumber, String vechilenumber, String licensenumber,
+	public Driver(String name, String address, String email, int phonenumber, String vechilenumber, String licensenumber,
 			Date expirydate, String password, String confirmpassword) {
 		super();
 		this.name = name;
 		this.address = address;
+		this.email = email;
 		this.phonenumber = phonenumber;
 		this.vechilenumber = vechilenumber;
 		this.licensenumber = licensenumber;
 		this.expirydate = expirydate;
 		this.password = password;
 		this.confirmpassword = confirmpassword;
+	}
+
+	public Driver(String name, String address, int phonenumber, String vechilenumber, String licensenumber,
+			Date expirydate, String password, String confirmpassword) {
+		this(name, address, null, phonenumber, vechilenumber, licensenumber, expirydate, password, confirmpassword);
 	}
 }

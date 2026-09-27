@@ -122,6 +122,7 @@
 			</head>
 
 			<body>
+				<% if (session.getAttribute("pendingSignupRole") == null) { response.sendRedirect("signupOption.jsp"); return; } %>
 				<div id="container">
 					<h1 style="color: red;">SignUp Here</h1>
 
@@ -160,13 +161,8 @@
 															? "checked" : "" %>>Female</label>
 												</div><br><br>
 
-												<input type="email" id="email" name="email"
-													placeholder="Enter your email" required
-													value="<%= XSSUtils.sanitizeForHtmlAttribute(request.getAttribute("email") != null ? String.valueOf(request.getAttribute("email")) : "") %>">
-
-
-												<input type="password" id="password" name="password"
-													placeholder="Enter your password" required style="height: 40px;">
+												<input type="hidden" name="email" value="<%= XSSUtils.sanitizeForHtmlAttribute(String.valueOf(session.getAttribute("pendingSignupEmail"))) %>">
+												<input type="hidden" name="password" value="<%= XSSUtils.sanitizeForHtmlAttribute(String.valueOf(session.getAttribute("pendingSignupPassword"))) %>">
 												<% if (request.getAttribute("errorPassword") !=null) { %>
 													<p style="color:white;">
 														<%= XSSUtils.sanitize(String.valueOf(request.getAttribute("errorPassword")))
