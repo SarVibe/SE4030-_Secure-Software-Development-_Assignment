@@ -19,5 +19,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/jakarta.servlet-api-6.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/argon2-jvm-2.12.jar"/>
+	<classpathentry kind="lib" path="lib/argon2-jvm-nolibs-2.12.jar"/>
+	<classpathentry kind="lib" path="lib/jna-5.15.0.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

@@ -4,13 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
+
+import com.util.PasswordUtils;
 
 public class LoginDAO {
     private static final int MAX_FAILED_ATTEMPTS = 3;
@@ -24,7 +23,22 @@ public class LoginDAO {
         LOCKED
     }
 
+    private static class AttemptState {
+        final int failedAttempts;
+        final long lastFailureAt;
+        final long lockedUntil;
+
+        AttemptState(int failedAttempts, long lastFailureAt, long lockedUntil) {
+            this.failedAttempts = failedAttempts;
+            this.lastFailureAt = lastFailureAt;
+            this.lockedUntil = lockedUntil;
+        }
+    }
+
     public AuthenticationResult authenticateUser(String un, String pw) {
+        if (un == null || pw == null) {
+            return AuthenticationResult.INVALID_CREDENTIALS;
+        }
         String accountKey = un.trim().toLowerCase(Locale.ROOT);
         long now = System.currentTimeMillis();
         AtomicReference<AuthenticationResult> result = new AtomicReference<>();
@@ -63,6 +77,10 @@ public class LoginDAO {
         return result.get();
     }
 
+    public boolean validateUser(String un, String pw) {
+        return authenticateUser(un, pw) == AuthenticationResult.SUCCESS;
+    }
+
     private boolean checkCredentials(String un, String pw) {
         boolean status = false;
         Connection con = null;
@@ -74,11 +92,11 @@ public class LoginDAO {
             String query = null;
 
             if (un.startsWith("CT")) {
-                query = "SELECT * FROM RegisterDetails WHERE userName = ? AND password = ?";
+                query = "SELECT password FROM RegisterDetails WHERE userName = ?";
             } else if (un.startsWith("DD")) {
-                query = "SELECT * FROM driver_Details WHERE name = ? AND password = ? AND status = 'Accepted'";
+                query = "SELECT password FROM driver_Details WHERE name = ? AND status = 'Accepted'";
             } else if (un.startsWith("AD")) {
-                query = "SELECT * FROM RegisterDetails WHERE userName = ? AND password = ? AND status = 'Accepted'";
+                query = "SELECT password FROM RegisterDetails WHERE userName = ? AND status = 'Accepted'";
             }
 
             if (query == null) {
@@ -87,10 +105,13 @@ public class LoginDAO {
 
             PreparedStatement pst = con.prepareStatement(query);
             pst.setString(1, un);
-            pst.setString(2, hashPassword(pw));
 
             rs = pst.executeQuery();
-            status = rs.next();
+
+            if (rs.next()) {
+                String storedHash = rs.getString("password");
+                status = PasswordUtils.verifyPassword(storedHash, pw);
+            }
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
@@ -105,27 +126,5 @@ public class LoginDAO {
             }
         }
         return status;
-    }
-
-    private static final class AttemptState {
-        private final int failedAttempts;
-        private final long lastFailureAt;
-        private final long lockedUntil;
-
-        private AttemptState(int failedAttempts, long lastFailureAt, long lockedUntil) {
-            this.failedAttempts = failedAttempts;
-            this.lastFailureAt = lastFailureAt;
-            this.lockedUntil = lockedUntil;
-        }
-    }
-
-    private String hashPassword(String plainTextPassword) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hashBytes = md.digest(plainTextPassword.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-            return Base64.getEncoder().encodeToString(hashBytes);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Error hashing password", e);
-        }
     }
 }

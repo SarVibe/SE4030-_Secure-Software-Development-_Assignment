@@ -1,15 +1,12 @@
 package com.signupDriver;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 import com.InvalidUserDefinedException.*;
+import com.util.PasswordUtils;
 
 public class signupDriverDao {
 	public boolean insert(Driver driver) throws SQLException , invalidUsername1Exception{
@@ -56,8 +53,8 @@ public class signupDriverDao {
 			pst.setString(5, driver.getVechilenumber());
 			pst.setString(6, driver.getLicensenumber());
 			pst.setDate(7, driver.getExpirydate());
-			pst.setString(8, hashPassword(driver.getPassword()));
-			pst.setString(9, hashPassword(driver.getConfirmpassword()));
+			pst.setString(8, PasswordUtils.hashPassword(driver.getPassword()));
+			pst.setString(9, PasswordUtils.hashPassword(driver.getConfirmpassword()));
 			
 			int rowsAffected = pst.executeUpdate();
 		    
@@ -72,15 +69,5 @@ public class signupDriverDao {
 		}
 
 		return result;
-	}
-
-	private String hashPassword(String plainTextPassword) {
-		try {
-			MessageDigest md = MessageDigest.getInstance("SHA-256");
-			byte[] hashBytes = md.digest(plainTextPassword.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-			return Base64.getEncoder().encodeToString(hashBytes);
-		} catch (NoSuchAlgorithmException e) {
-			throw new RuntimeException("Error hashing password", e);
-		}
 	}
 }
