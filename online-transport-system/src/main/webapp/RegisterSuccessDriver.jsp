@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="refresh" content="10;url=Index.jsp">
 <title>Register Successful</title>
-	<style>
+	<style nonce="${cspNonce}">
 		body::before {
 		    content: "";
 		    position: fixed;

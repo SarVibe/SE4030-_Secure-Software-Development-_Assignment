@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Payment Successful</title>
     
-    <style>
+    <style nonce="${cspNonce}">
         body 
         {
 		    font-family: 'Arial', sans-serif; 

@@ -6,7 +6,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="refresh" content="6;url=cusHome.jsp">
 	<title>Registration Successful</title>
-	<style>
+	<style nonce="${cspNonce}">
 		body::before {
 		    content: "";
 		    position: fixed;

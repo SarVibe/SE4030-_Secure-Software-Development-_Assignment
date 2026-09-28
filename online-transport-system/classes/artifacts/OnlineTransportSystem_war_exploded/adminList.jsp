@@ -12,7 +12,7 @@
 <html>
 <head>
     <title>Pending Admin's List</title>
-    <style>
+    <style nonce="${cspNonce}">
         body {
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;

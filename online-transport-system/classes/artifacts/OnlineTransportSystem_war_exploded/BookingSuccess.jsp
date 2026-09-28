@@ -7,7 +7,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="refresh" content="20; URL=BookingSuccessServlet">
 	<title>Booking Success</title>
-	<style>
+	<style nonce="${cspNonce}">
 		body::before {
 		    content: "";
 		    position: fixed;

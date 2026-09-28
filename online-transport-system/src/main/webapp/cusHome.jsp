@@ -11,7 +11,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Home Page</title>
-	<style>
+	<style nonce="${cspNonce}">
 		body {
 			margin: 0;
 		    padding: 0;

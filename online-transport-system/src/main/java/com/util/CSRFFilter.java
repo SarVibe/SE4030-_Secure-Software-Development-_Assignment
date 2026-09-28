@@ -8,7 +8,6 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -31,10 +30,8 @@ public class CSRFFilter implements Filter {
             HttpServletResponse httpResponse = (HttpServletResponse) response;
 
             // Ensure session exists and has a CSRF token
-            HttpSession session = httpRequest.getSession(true);
-            if (session.getAttribute(CSRFUtils.CSRF_TOKEN_ATTR) == null) {
-                CSRFUtils.getToken(httpRequest);
-            }
+            String token = CSRFUtils.getToken(httpRequest);
+            httpRequest.setAttribute("csrfToken", token);
 
             // For state-changing HTTP methods, validate CSRF token
             String method = httpRequest.getMethod();
@@ -57,3 +54,4 @@ public class CSRFFilter implements Filter {
         // Cleanup
     }
 }
+

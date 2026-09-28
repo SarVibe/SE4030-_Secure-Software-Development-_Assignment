@@ -4,7 +4,7 @@
 
     <head>
       <title>User Management Application</title>
-      <style>
+      <style nonce="${cspNonce}">
         body {
           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
           background-color: #e9f4fb;
@@ -169,9 +169,6 @@
             <div class="container col-md-5">
               <div class="card">
                 <div class="card-body">
-                  <c:if test="${user != null}">
-                    <form action="SignupDriver" method="post">
-                  </c:if>
                   <form action="SignupDriver" method="post">
                   <% if (session.getAttribute("pendingSignupRole") == null) { response.sendRedirect("signupOption.jsp"); return; } %>
                   <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}" />

@@ -5,7 +5,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Signup Option</title>
-	<style>
+	<style nonce="${cspNonce}">
 		body {
 			background-image:linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),url("images/backg.jpg");
 		    background-attachment: fixed;

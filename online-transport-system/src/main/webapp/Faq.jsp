@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>FAQ Page</title>
-    <style>
+    <style nonce="${cspNonce}">
         /* Global Reset */
         * {
             margin: 0;

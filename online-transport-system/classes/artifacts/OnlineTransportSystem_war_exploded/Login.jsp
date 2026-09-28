@@ -3,7 +3,7 @@
 <html>
     <head>
         <title>Login</title>
-        <style>
+        <style nonce="${cspNonce}">
             /* CSS styles */
             body {
                 font-family: 'Poppins', Arial, sans-serif;

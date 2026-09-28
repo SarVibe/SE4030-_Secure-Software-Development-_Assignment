@@ -11,7 +11,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Admin Home</title>
-	<style>
+	<style nonce="${cspNonce}">
 		body {
 			background-image: url("https://wallpapers.com/images/hd/1920-x-1080-car-o0rkgvylu81cdjhz.jpg");
 			font-family: 'Arial', sans-serif;

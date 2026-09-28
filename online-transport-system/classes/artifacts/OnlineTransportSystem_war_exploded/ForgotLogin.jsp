@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forgot Password</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
+    <style nonce="${cspNonce}">
         body {
             font-family: Arial, sans-serif;
             background-image: url('https://cdn.pixabay.com/photo/2017/08/07/05/11/architecture-2600144_1280.jpg');

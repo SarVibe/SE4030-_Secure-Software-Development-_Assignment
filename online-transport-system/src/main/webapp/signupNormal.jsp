@@ -8,7 +8,7 @@
 			<head>
 				<meta charset="UTF-8">
 				<title>SignUp Page</title>
-				<style>
+				<style nonce="${cspNonce}">
 					body::before {
 						content: "";
 						position: fixed;

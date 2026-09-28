@@ -15,7 +15,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Driver and Booking Details</title>
-    <style>
+    <style nonce="${cspNonce}">
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f5;

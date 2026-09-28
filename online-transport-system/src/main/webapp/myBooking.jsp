@@ -15,7 +15,7 @@
 <head>
 <meta charset="UTF-8">
 <title>My Bookings</title>
-  <style>
+  <style nonce="${cspNonce}">
         body {
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;

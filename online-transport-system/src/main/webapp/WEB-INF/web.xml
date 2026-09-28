@@ -1,6 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://jakarta.ee/xml/ns/jakartaee" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         id="WebApp_ID" version="6.0">
+
   <display-name>OnlineTransportSystem</display-name>
+
+  <!-- ================================================================
+       Security HTTP Response Headers Filter (CSP, X-Frame-Options, etc.)
+       Must run first so security headers are set before any content is written.
+       Addresses ZAP findings:
+         - Content-Security-Policy (CSP) Header Not Set  [CWE-693]
+         - Missing Anti-clickjacking Header              [CWE-1021]
+         - X-Content-Type-Options Header Missing         [CWE-693]
+       ================================================================ -->
+  <filter>
+    <filter-name>SecurityHeadersFilter</filter-name>
+    <filter-class>com.util.SecurityHeadersFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>SecurityHeadersFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+  </filter-mapping>
+
+  <!-- ================================================================
+       SameSite Cookie Filter
+       Appends SameSite=Strict to every Set-Cookie header.
+       Addresses ZAP finding: Cookie without SameSite Attribute [CWE-1275]
+       ================================================================ -->
+  <filter>
+    <filter-name>SameSiteCookieFilter</filter-name>
+    <filter-class>com.util.SameSiteCookieFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>SameSiteCookieFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+  </filter-mapping>
+
+  <!-- ================================================================
+       CSRF Protection Filter
+       Ensures every session has a CSRF token, and validates it on all
+       state-changing requests (POST, PUT, DELETE, PATCH).
+       Addresses ZAP finding: Absence of Anti-CSRF Tokens [CWE-352]
+       ================================================================ -->
+  <filter>
+    <filter-name>CSRFFilter</filter-name>
+    <filter-class>com.util.CSRFFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>CSRFFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+  </filter-mapping>
+
+  <!-- ================================================================
+       Session Configuration
+       HttpOnly is enforced at the Tomcat level.
+       SameSite is handled by SameSiteCookieFilter above (Servlet API 6.0
+       does not yet expose SameSite in <cookie-config>).
+       ================================================================ -->
+  <session-config>
+    <session-timeout>30</session-timeout>
+    <cookie-config>
+      <http-only>true</http-only>
+      <!-- Secure flag: uncomment when HTTPS is enabled in production -->
+      <!-- <secure>true</secure> -->
+    </cookie-config>
+    <tracking-mode>COOKIE</tracking-mode>
+  </session-config>
+
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.jsp</welcome-file>
@@ -9,4 +88,5 @@
     <welcome-file>default.jsp</welcome-file>
     <welcome-file>default.htm</welcome-file>
   </welcome-file-list>
+
 </web-app>

@@ -9,7 +9,7 @@
 	<meta charset="UTF-8">
 	<title>LogOut Page</title>
 	<meta http-equiv="refresh" content="6;url=Index.jsp">
-	<style>
+	<style nonce="${cspNonce}">
 		body::before {
 		    content: "";
 		    position: fixed;
